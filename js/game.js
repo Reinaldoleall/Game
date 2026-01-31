@@ -755,30 +755,65 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            this.stateMachine.addState('attacking', {
-                enter: () => {
-                    const weapon = WEAPONS[this.equippedWeapon];
-                    this.enemiesHitInCurrentAttack.clear();
-                    if (weapon.chargeAnimation) {
-                        this.stateMachine.setState('bow_charge');
-                    } else {
-                        this.isAttacking = true;
-                        this.setAnimation(weapon.animation, weapon.cooldown / (weapon.animation.length || 1));
-                        if (weapon.type === 'ranged') {
-                            this.game.spawnPlayerProjectile(1.0);
-                        }
-
-                        setTimeout(() => {
-                            this.isAttacking = false;
-                            if (this.isGrounded) {
-                                this.stateMachine.setState(Math.abs(this.velocityX) > 0.1 ? 'walking' : 'idle');
-                            } else {
-                                this.stateMachine.setState('jumping');
-                            }
-                        }, weapon.cooldown);
-                    }
+this.stateMachine.addState('attacking', {
+    enter: () => {
+        const weapon = WEAPONS[this.equippedWeapon];
+        this.enemiesHitInCurrentAttack.clear();
+        
+        if (weapon.chargeAnimation) {
+            this.stateMachine.setState('bow_charge');
+        } else {
+            this.isAttacking = true;
+            this.setAnimation(weapon.animation, weapon.cooldown / (weapon.animation.length || 1));
+            
+            // Dispara imediatamente (primeiro tiro)
+            if (weapon.type === 'ranged') {
+                this.game.spawnPlayerProjectile(1.0);
+            }
+            
+            // Armazena o tempo do último tiro
+            this.lastShotTime = performance.now();
+        }
+    },
+    update: (deltaTime, controls) => {
+        const weapon = WEAPONS[this.equippedWeapon];
+        
+        // VERIFICA SE O BOTÃO AINDA ESTÁ PRESSIONADO
+        if (!controls.attack) {
+            // Botão solto - volta para idle/walking
+            this.isAttacking = false;
+            if (this.isGrounded) {
+                this.stateMachine.setState(Math.abs(this.velocityX) > 0.1 ? 'walking' : 'idle');
+            } else {
+                this.stateMachine.setState('jumping');
+            }
+            return;
+        }
+        
+        // Se o botão ainda está pressionado, verifica se pode atirar novamente
+        if (weapon.type === 'ranged' && !weapon.chargeAnimation) {
+            const currentTime = performance.now();
+            const timeSinceLastShot = currentTime - this.lastShotTime;
+            
+            // Verifica se passou tempo suficiente desde o último tiro
+            if (timeSinceLastShot >= weapon.cooldown) {
+                // Dispara outro tiro
+                this.game.spawnPlayerProjectile(1.0);
+                this.lastShotTime = currentTime;
+                
+                // Reinicia a animação (opcional, para feedback visual)
+                this.frame = 0;
+                if (weapon.animation && weapon.animation[0]) {
+                    this.element.style.backgroundImage = `url('${weapon.animation[0]}')`;
                 }
-            });
+            }
+        }
+    },
+    exit: () => {
+        this.isAttacking = false;
+        this.lastShotTime = 0;
+    }
+});
 
             this.stateMachine.addState('bow_charge', {
                 enter: () => {
