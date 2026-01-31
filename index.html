@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0" />
+
+    <link rel="stylesheet" href="./css/style.css">
+
+</head>
+
+<body>
+    <div id="game-scaler">
+        <div id="game-container">
+            <div id="sky-background">
+                <div class="fog-layer"></div>
+            </div>
+            <div id="game-world">
+                <!-- SÓ ISSO JÁ FUNCIONA: -->
+                <div style="
+    position: absolute;
+    left: 110px;
+    bottom: -50px;
+    width: 300px;
+    height: 300px;
+    background: url('./webp/nuvens.webp') center/contain no-repeat;
+    animation: levitar 10s ease-in-out infinite;
+"></div>
+                <div style="
+    position: absolute;
+    left: 110px;
+    bottom: -70px;
+    width: 300px;
+    height: 300px;
+    background: url('./webp/nuvenss.webp') center/contain no-repeat;
+    animation: levitar 10s ease-in-out infinite;
+    z-index: 9;
+"></div>
+
+                <!-- nuvens 2: -->
+                <div style="
+    position: absolute;
+    left: 910px;
+    top: -20px;
+    width: 300px;
+    height: 300px;
+    background: url('./webp/nuvens.webp') center/contain no-repeat;
+    animation: levitar 10s ease-in-out infinite;
+"></div>
+                <div style="
+    position: absolute;
+    left: 910px;
+    top: -10px;
+    width: 300px;
+    height: 300px;
+    background: url('./webp/nuvenss.webp') center/contain no-repeat;
+    animation: levitar 10s ease-in-out infinite;
+    z-index: 9;
+"></div>
+
+                <div id="arvore" style="
+    position: absolute;
+    left: 1010px;
+    bottom: -120px;
+    width: 800px;
+    height: 800px;
+    pointer-events: none;
+    /* Escurece e desfoca o que está muito perto (efeito câmera) */
+    filter: brightness(0.3) blur(1px); 
+    background: url('./webp/arvore.png') center/contain no-repeat;
+    z-index: 27;
+"></div>
+
+            </div>
+            <div class="layer" id="foreground"></div>
+            <div class="layer" id="ground"></div>
+            <div class="damage-effect"></div>
+            <div id="ui-container">
+                <div class="health-container"></div>
+                <div id="weapon-slots-container"></div>
+                <div class="special-container">
+                    <div class="special-bar"></div>
+                </div>
+            </div>
+            <div id="controls-overlay">
+                <div class="analog-container">
+                    <div class="analog-base"></div>
+                    <div class="analog-stick"></div>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn" id="btn-jump">Pular</button>
+                    <button class="action-btn" id="btn-attack">Atacar</button>
+                    <button class="action-btn" id="btn-block">Def</button>
+                    <button class="action-btn" id="btn-special">SP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://pixijs.download/release/pixi.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+    <script src="./js/game.js"></script>
+</body>
+
+</html>
