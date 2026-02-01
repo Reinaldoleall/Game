@@ -1,5 +1,5 @@
 /* ===================================================================
-   RESET E OTIMIZAÇÕES PARA WEBVIEW ANDROID - PREVENÇÃO DE FLICKER
+   RESET E OTIMIZAÇÕES PARA WEBVIEW ANDROID
    =================================================================== */
 * {
     -webkit-tap-highlight-color: transparent;
@@ -29,7 +29,7 @@ body {
 }
 
 /* ===================================================================
-   ESTRUTURA PRINCIPAL COM OTIMIZAÇÕES
+   ESTRUTURA PRINCIPAL
    =================================================================== */
 body {
     display: flex;
@@ -38,10 +38,6 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    image-rendering: optimizeQuality;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    -ms-interpolation-mode: bicubic;
 }
 
 #game-scaler {
@@ -51,7 +47,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    transform: translateZ(0);
 }
 
 #game-container {
@@ -62,17 +57,17 @@ body {
     max-height: 100%;
     overflow: hidden;
     transform-origin: center center;
-    border-radius: 0;
+    border-radius: 0px;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     perspective: 1000px;
+    -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
-    will-change: transform;
-    contain: strict; /* Otimização de performance */
+    image-rendering: auto !important;
 }
 
 /* ===================================================================
-   CAMADAS DO CENÁRIO - OTIMIZADAS
+   CAMADAS DO CENÁRIO
    =================================================================== */
 .layer {
     position: absolute;
@@ -84,10 +79,9 @@ body {
     background-repeat: no-repeat;
     will-change: transform;
     transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    image-rendering: crisp-edges;
 }
 
+/* Fundo principal: Gradiente do Espaço/Céu Noturno */
 #sky-background {
     z-index: 1;
     background: linear-gradient(to bottom, #020107 0%, #201b46 50%, #483b8a 100%);
@@ -97,10 +91,11 @@ body {
     height: 100%;
     background-repeat: no-repeat;
     overflow: hidden;
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
-    will-change: background-position;
 }
 
+/* Camada de Estrelas */
 #sky-background::before {
     content: "";
     position: absolute;
@@ -114,9 +109,11 @@ body {
     background-size: 200px 200px;
     opacity: 0.5;
     z-index: 2;
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
 }
 
+/* Montanhas Distantes (Silhuetas) */
 #sky-background::after {
     content: "";
     position: absolute;
@@ -128,9 +125,11 @@ body {
         conic-gradient(from 150deg at 50% 100%, #110e27 0deg 60deg, transparent 60deg) 20% 100% / 600px 400px repeat-x;
     z-index: 3;
     filter: blur(2px);
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
 }
 
+/* Animação de movimento das estrelas */
 @keyframes starsMove {
     0% {
         transform: translateX(0) translateZ(0);
@@ -140,8 +139,10 @@ body {
     }
 }
 
+/* Nuvem 1: Grande e distante (movimento lento) */
 #sky-background::before {
     animation: starsMove 60s linear infinite;
+    -webkit-animation: starsMove 60s linear infinite;
 }
 
 #game-world {
@@ -151,16 +152,14 @@ body {
     width: 100%;
     height: calc(100% - 103px);
     z-index: 5;
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
-    will-change: transform;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
 }
 
 #game-world * {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    backface-visibility: hidden;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    
 }
 
 #ground {
@@ -171,8 +170,8 @@ body {
     height: 510px;
     z-index: 2;
     top: auto;
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
-    will-change: background-position;
 }
 
 #foreground {
@@ -185,16 +184,13 @@ body {
     z-index: 26;
     pointer-events: none;
     filter: brightness(0.3) blur(1px);
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
-    will-change: background-position;
 }
 
-#arvore {
-    z-index: 27;
-}
 
 /* ===================================================================
-   ENTIDADES DO JOGO - FIX FLICKER CRÍTICO
+   ENTIDADES DO JOGO - CORRIGIDAS PARA EVITAR FLICKERING
    =================================================================== */
 .character,
 .enemy,
@@ -208,144 +204,56 @@ body {
     transform-origin: center bottom;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
-    perspective: 1000;
-    /* CONTROLE DE QUALIDADE DE IMAGEM - ESSENCIAL PARA PNG */
-    image-rendering: crisp-edges;
-    image-rendering: -webkit-optimize-contrast;
-    -ms-interpolation-mode: nearest-neighbor;
-    /* ACELERAÇÃO DE GPU */
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-    /* WILL-CHANGE APENAS PARA O QUE É NECESSÁRIO */
+    -webkit-backface-visibility: hidden;
+    image-rendering: auto !important;
+    /* Usar auto em vez de pixelated para animações suaves */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Otimização de GPU */
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
     will-change: transform;
-    /* CONTÊM PARA PERFORMANCE */
-    contain: layout style paint;
-    /* EVITA REPAINT DESNECESSÁRIO */
-    -webkit-font-smoothing: subpixel-antialiased;
+    /* Só transform, não background-image */
 }
 
-/* Otimização específica para PNG */
+/* CLASSE ESPECIAL PARA ANIMAÇÕES SEM FLICKER */
+.character.animating {
+    animation-timing-function: steps(1, end) !important;
+    -webkit-animation-timing-function: steps(1, end) !important;
+    animation-fill-mode: both !important;
+    -webkit-animation-fill-mode: both !important;
+}
+
 .character {
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
     width: 100px;
     height: 120px;
     z-index: 8;
+    /* Previne repaints desnecessários */
+    contain: layout style paint;
 }
 
 .enemy {
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
     width: 80px;
     height: 80px;
     z-index: 7;
 }
 
 .projectile {
-    image-rendering: crisp-edges;
     width: 40px;
     height: 15px;
     z-index: 7;
 }
 
 .pickup-item {
-    image-rendering: crisp-edges;
     width: 50px;
     height: 50px;
     z-index: 6;
 }
 
-/* Classe de animação suave sem flicker */
-.animate-smooth {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    perspective: 1000;
-}
 
-/* ===================================================================
-   ANIMAÇÕES DO JOGO - OTIMIZADAS
-   =================================================================== */
-/* Animação de idle otimizada */
-@keyframes playerIdle {
-    0%, 100% {
-        background-image: url('./webp/I.png');
-    }
-    16.67% {
-        background-image: url('./webp/I1.png');
-    }
-    33.33% {
-        background-image: url('./webp/I2.png');
-    }
-    50% {
-        background-image: url('./webp/I3.png');
-    }
-    66.67% {
-        background-image: url('./webp/I4.png');
-    }
-    83.33% {
-        background-image: url('./webp/I5.png');
-    }
-}
-
-/* ANIMAÇÃO DE CAMINHADA OTIMIZADA - SEM FLICKER */
-@keyframes playerWalk {
-    0% {
-        background-image: url('./webp/1.png');
-    }
-    6.67% {
-        background-image: url('./webp/2.png');
-    }
-    13.33% {
-        background-image: url('./webp/3.png');
-    }
-    20% {
-        background-image: url('./webp/4.png');
-    }
-    26.67% {
-        background-image: url('./webp/5.png');
-    }
-    33.33% {
-        background-image: url('./webp/6.png');
-    }
-    40% {
-        background-image: url('./webp/7.png');
-    }
-    46.67% {
-        background-image: url('./webp/8.png');
-    }
-    53.33% {
-        background-image: url('./webp/9.png');
-    }
-    60% {
-        background-image: url('./webp/10.png');
-    }
-    66.67% {
-        background-image: url('./webp/11.png');
-    }
-    73.33% {
-        background-image: url('./webp/12.png');
-    }
-    80% {
-        background-image: url('./webp/13.png');
-    }
-    86.67% {
-        background-image: url('./webp/14.png');
-    }
-    93.33% {
-        background-image: url('./webp/15.png');
-    }
-}
-
-/* Classe para ativar animação de caminhada sem flicker */
-.character.walking {
-    animation: playerWalk 0.8s steps(14, end) infinite;
-    animation-timing-function: steps(1, end);
-    -webkit-animation-timing-function: steps(1, end);
-}
-
-/* Outras animações */
 @keyframes float {
     0%, 100% {
         transform: translate(var(--translateX, 0), var(--translateY, 0)) scaleX(var(--direction, 1)) translateY(0px) translateZ(0);
@@ -355,61 +263,26 @@ body {
     }
 }
 
-@keyframes flicker {
-    0%, 100% {
-        opacity: 0.6;
-    }
-    50% {
-        opacity: 0.3;
-    }
-}
 
-@keyframes paralyzed-shake {
-    0%, 100% {
-        transform: translate(var(--translateX, 0), var(--translateY, 0)) scaleX(var(--direction, 1)) translateZ(0);
-    }
-    50% {
-        transform: translate(calc(var(--translateX, 0) - 1px), var(--translateY, 0)) scaleX(var(--direction, 1)) translateZ(0);
-    }
-}
 
-@keyframes damagePulse {
-    0% {
-        transform: scale(0.5) translateZ(0);
-    }
-    50% {
-        transform: scale(1.5) translateZ(0);
-    }
-    100% {
-        transform: scale(1) translateZ(0);
-    }
-}
 
-@keyframes damageFloat {
-    0% {
-        opacity: 1;
-        margin-top: 0;
-        transform: translateZ(0);
+@keyframes levitar {
+    0%, 20% {
+        transform: translateY(0px) translateZ(0);
     }
-    100% {
-        opacity: 0;
-        margin-top: -80px;
-        transform: translateZ(0);
+    20% {
+        transform: translateY(-15px) translateZ(0);
     }
-}
-
-@keyframes landingShake {
-    0% { transform: scale(1.2); }
-    50% { transform: scale(0.9); }
-    100% { transform: scale(1); }
 }
 
 .invulnerable {
     animation: flicker 0.15s infinite;
+    -webkit-animation: flicker 0.15s infinite;
 }
 
 .paralyzed {
     animation: paralyzed-shake 0.2s infinite;
+    -webkit-animation: paralyzed-shake 0.2s infinite;
 }
 
 .damage-effect {
@@ -423,6 +296,7 @@ body {
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.1s;
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
 }
 
@@ -430,12 +304,8 @@ body {
     opacity: 1;
 }
 
-.enemy.landing-impact {
-    animation: landingShake 0.3s ease-out;
-}
-
 /* ===================================================================
-   INTERFACE DO USUÁRIO - OTIMIZADA
+   INTERFACE DO USUÁRIO
    =================================================================== */
 #ui-container {
     position: absolute;
@@ -445,6 +315,7 @@ body {
     height: 100%;
     z-index: 1000;
     pointer-events: none;
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
 }
 
@@ -453,8 +324,7 @@ body {
     top: 30px;
     left: 39px;
     display: flex;
-    gap: 0;
-    will-change: transform;
+    gap: 0px;
 }
 
 .health-heart {
@@ -462,8 +332,8 @@ body {
     height: 50px;
     background-image: url('../webp/heart.png');
     background-size: contain;
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
-    image-rendering: crisp-edges;
 }
 
 .health-heart.empty {
@@ -478,7 +348,6 @@ body {
     background: rgba(0, 0, 0, 0.4);
     padding: 5px;
     border-radius: 5px;
-    transform: translateZ(0);
 }
 
 .special-bar {
@@ -507,8 +376,8 @@ body {
     padding: 8px;
     border-radius: 8px;
     pointer-events: all;
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
-    will-change: transform;
 }
 
 .weapon-slot {
@@ -522,7 +391,6 @@ body {
     cursor: pointer;
     transition: all 0.2s;
     opacity: 0.5;
-    image-rendering: crisp-edges;
 }
 
 .weapon-slot.selected {
@@ -542,6 +410,7 @@ body {
     overflow: hidden;
     z-index: 10;
     transition: opacity 0.3s;
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
 }
 
@@ -563,7 +432,7 @@ body {
 }
 
 /* ===================================================================
-   CONTROLES - OTIMIZADOS
+   CONTROLES
    =================================================================== */
 #controls-overlay {
     pointer-events: none;
@@ -592,6 +461,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
 }
 
@@ -615,8 +485,8 @@ body {
     pointer-events: none;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.1s ease-out;
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
-    will-change: transform;
 }
 
 .analog-stick.dragging {
@@ -660,8 +530,8 @@ body {
     backdrop-filter: blur(2px);
     transition: transform 0.05s, background-color 0.1s;
     user-select: none;
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
-    will-change: transform;
 }
 
 #btn-attack {
@@ -709,8 +579,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    -webkit-transform: translateX(-50%) translateZ(0);
     transform: translateX(-50%) translateZ(0);
-    will-change: transform;
 }
 
 .btn-label {
@@ -718,7 +588,7 @@ body {
 }
 
 /* ===================================================================
-   RESPONSIVIDADE
+   RESPONSIVIDADE DOS CONTROLES
    =================================================================== */
 @media (orientation: landscape) {
     .analog-container {
@@ -756,7 +626,7 @@ body {
 }
 
 /* ===================================================================
-   DEBUG E UTILITÁRIOS
+   DEBUG E PRELOAD
    =================================================================== */
 .debug-hitbox {
     pointer-events: none;
@@ -773,7 +643,6 @@ body {
     background-position: center bottom;
     z-index: 5;
     pointer-events: none;
-    image-rendering: crisp-edges;
 }
 
 .stage-object.blocker {
@@ -790,35 +659,136 @@ body {
     box-sizing: border-box;
 }
 
-/* ===================================================================
-   CLASSES DE OTIMIZAÇÃO CRÍTICAS PARA FLICKER
-   =================================================================== */
-.accelerated {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
+
+
+@keyframes damagePulse {
+    0% {
+        transform: scale(0.5) translateZ(0);
+    }
+    50% {
+        transform: scale(1.5) translateZ(0);
+    }
+    100% {
+        transform: scale(1) translateZ(0);
+    }
 }
 
-.no-flicker {
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-    perspective: 1000px;
+@keyframes damageFloat {
+    0% {
+        opacity: 1;
+        margin-top: 0;
+        transform: translateZ(0);
+    }
+    100% {
+        opacity: 0;
+        margin-top: -80px;
+        transform: translateZ(0);
+    }
+}
+
+/* ===================================================================
+   OTIMIZAÇÕES ADICIONAIS PARA ANIMAÇÕES
+   =================================================================== */
+/* Classe para ativar animações sem flicker */
+.animate-smooth {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    perspective: 1000;
     contain: layout style paint;
 }
 
-/* Classe para sprites que devem manter qualidade pixelada */
-.pixel-perfect {
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-    -ms-interpolation-mode: nearest-neighbor;
+/* Forçar aceleração de GPU em elementos animados */
+.accelerated {
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
 }
 
-/* Classe para animações suaves */
-.smooth-animation {
-    animation-timing-function: steps(1, end);
-    -webkit-animation-timing-function: steps(1, end);
-    animation-fill-mode: both;
-    -webkit-animation-fill-mode: both;
-    backface-visibility: hidden;
-                        }
+/* Adicione ao seu CSS existente */
+.enemy.landing-impact {
+    animation: landingShake 0.3s ease-out;
+}
+
+@keyframes landingShake {
+    0% { transform: scale(1.2); }
+    50% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+.boss-entity {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    bottom: 0;
+    background-position: bottom;
+    z-index: 5; /* Fica na frente dos inimigos comuns */
+    pointer-events: none;
+    transition: filter 0.1s;
+    transform-origin: bottom center;
+}
+
+/* Sistema de Pré-carregamento Invisível */
+body::after {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    z-index: -9999;
+    content: 
+        /* Jogador - Idle e Movimento */
+        url('./webp/I.png') url('./webp/I1.png') url('./webp/I2.png') url('./webp/I3.png') 
+        url('./webp/I4.png') url('./webp/I5.png') url('./webp/I6.png')
+        url('./webp/1.png') url('./webp/2.png') url('./webp/3.png') url('./webp/4.png')
+        url('./webp/5.png') url('./webp/6.png') url('./webp/7.png') url('./webp/8.png')
+        url('./webp/9.png') url('./webp/10.png') url('./webp/11.png') url('./webp/12.png')
+        url('./webp/13.png') url('./webp/14.png') url('./webp/15.png')
+        /* Jogador - Corrida Atirando */
+        url('./webp/1c.png') url('./webp/2c.png') url('./webp/3c.png') url('./webp/4c.png')
+        url('./webp/5c.png') url('./webp/6c.png') url('./webp/7c.png') url('./webp/8c.png')
+        url('./webp/9c.png') url('./webp/10c.png') url('./webp/11c.png') url('./webp/12c.png')
+        url('./webp/13c.png') url('./webp/14c.png') url('./webp/15c.png') url('./webp/16c.png')
+        /* Jogador - Pulo e Abaixar */
+        url('./webp/p.png') url('./webp/p4.png') url('./webp/p8.png') url('./webp/p12.png') 
+        url('./webp/p16.png') url('./webp/p18.png')
+        url('./webp/b1.png') url('./webp/b2.png') url('./webp/b3.png') url('./webp/b4.png')
+        url('./webp/b5.png') url('./webp/b6.png') url('./webp/b7.png') url('./webp/b8.png')
+        url('./webp/b9.png') url('./webp/b10.png')
+        /* Escudos e Defesa */
+        url('./webp/esc.png') url('./webp/esc1.png') url('./webp/esc2.png') url('./webp/esc3.png')
+        url('./webp/esc4.png') url('./webp/esc5.png') url('./webp/esc6.png') url('./webp/esc7.png')
+        url('./webp/esc8.png') url('./webp/esc9.png') url('./webp/esc10.png') url('./webp/esc11.png')
+        url('./webp/esc12.png') url('./webp/esc13.png') url('./webp/esc14.png') url('./webp/esc15.png') url('./webp/esc16.png')
+        /* Ataques e Armas */
+        url('./webp/espada1.png') url('./webp/espada2.png') url('./webp/espada3.png')
+        url('./webp/chute.png') url('./webp/espada.webp') url('./webp/pedra.webp')
+        url('./webp/a1.png') url('./webp/a2.png') url('./webp/a3.png') url('./webp/a4.png')
+        url('./webp/a5.png') url('./webp/a6.png') url('./webp/a7.png') url('./webp/a8.png')
+        url('./webp/a9.png') url('./webp/a10.png') url('./webp/a11.png') url('./webp/a12.png')
+        url('./webp/tiro.gif') url('https://i.imgur.com/L127z5k.gif')
+        /* Inimigos Comuns */
+        url('./webp/d.png') url('./webp/d1.png') url('./webp/d2.png') url('./webp/d3.png')
+        url('./webp/d4.png') url('./webp/d5.png') url('./webp/d6.png') url('./webp/d7.png')
+        url('./webp/d8.png') url('./webp/d9.png') url('./webp/d10.png') url('./webp/d11.png')
+        url('./webp/d12.png') url('./webp/d13.png') url('./webp/d14.png')
+        url('./webp/dinossauro_morto.webp') url('./webp/fly.webp')
+        /* Boss - Chefe */
+        url('./webp/monstro_ativo.png') url('./webp/monstro_ativo1.png') url('./webp/monstro_ativo2.png')
+        url('./webp/mloop.png') url('./webp/mloop2.png') url('./webp/mloop3.png') url('./webp/mloop4.png')
+        url('./webp/mloop5.png') url('./webp/mloop6.png') url('./webp/mloop7.png') url('./webp/mloop8.png')
+        url('./webp/ataque.png') url('./webp/ataque1.png') url('./webp/ataque2.png') url('./webp/ataque3.png')
+        url('./webp/ataque4.png') url('./webp/ataque5.png') url('./webp/ataque6.png') url('./webp/ataque7.png')
+        url('./webp/ataque8.png') url('./webp/ataque9.png') url('./webp/ataque10.png') url('./webp/ataque11.png')
+        url('./webp/ataque12.png') url('./webp/ataque13.png') url('./webp/ataque14.png') url('./webp/ataque15.png')
+        url('./webp/ataque16.png') url('./webp/ataque01.png') url('./webp/ataque02.png') url('./webp/ataque03.png')
+        url('./webp/ataque04.png') url('./webp/ataque05.png') url('./webp/ataque06.png') url('./webp/ataque07.png')
+        url('./webp/ataque08.png') url('./webp/ataque09.png') url('./webp/morte.png') url('./webp/pedra_queda.png')
+        /* Cenário e Extras */
+        url('./webp/chao01.webp') url('./webp/chao02.webp') url('./webp/arvore.png') 
+        url('./webp/nature.png') url('./webp/nuvens.webp') url('./webp/nuvenss.webp') 
+        url('./webp/heart.png') url('./webp/16.png');
+}
