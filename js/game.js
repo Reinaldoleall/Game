@@ -207,7 +207,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // CONFIGURAÇÕES GERAIS E CONSTANTES DO JOGO
     // ===================================================================
     const CONFIG = {
-        DEBUG_MODE: false,
+        DEBUG_MODE: true,
         PLAYER_SPEED: 8, // Aumentado para compensar aceleração
         PLAYER_ACCELERATION: 1.5,
         PLAYER_FRICTION: 0.8,
@@ -238,6 +238,13 @@ window.addEventListener('DOMContentLoaded', () => {
             './webp/9.png', './webp/10.png', './webp/11.png', './webp/12.png',
             './webp/13.png', './webp/14.png', './webp/15.png'
         ],
+        // Localize o objeto ASSETS e adicione esta linha:
+player_run_shoot: [
+    './webp/1c.png', './webp/2c.png', './webp/3c.png', './webp/4c.png',
+    './webp/5c.png', './webp/6c.png', './webp/7c.png', './webp/8c.png',
+    './webp/9c.png', './webp/10c.png', './webp/11c.png', './webp/12c.png',
+    './webp/13c.png', './webp/14c.png', './webp/15c.png', './webp/16c.png'
+],
         player_jump: ['./webp/p.png', './webp/p4.png', './webp/p8.png', './webp/p12.png', './webp/p16.png', './webp/p18.png'],
         player_crouch: ['./webp/b1.png', './webp/b2.png', './webp/b3.png', './webp/b4.png', './webp/b5.png', './webp/b6.png', './webp/b7.png', './webp/b8.png', './webp/b9.png', './webp/b10.png'],
         shield_normal: [
@@ -250,7 +257,7 @@ window.addEventListener('DOMContentLoaded', () => {
         player_attack_sword: [
             './webp/espada1.png', './webp/espada2.png', './webp/espada3.png'
         ],
-        player_attack_bow_charge: ['./webp/a1.png', './webp/a2.png', './webp/a3.png', './webp/a4.png', './webp/a5.png', './webp/a6.png', './webp/a7.png', './webp/a8.png', './webp/a9.png', './webp/a10.png', './webp/a11.png', './webp/a12.png'],
+        player_attack_bow_charge: ['./webp/chute.png'],
         player_attack_pistol: ['./webp/a1.png', './webp/a2.png', './webp/a3.png', './webp/a4.png', './webp/a5.png', './webp/a6.png', './webp/a7.png', './webp/a8.png', './webp/a9.png', './webp/a10.png', './webp/a11.png', './webp/a12.png'],
         player_block: ['./webp/defesa.webp'],
         player_special: ['https://i.imgur.com/L127z5k.gif'],
@@ -263,16 +270,33 @@ window.addEventListener('DOMContentLoaded', () => {
         icon_sword: './webp/espada.webp',
         icon_bow: './webp/pedra.webp',
         icon_pistol: './webp/tiro.gif',
-        extras: [
-            './webp/16.png',
-            './webp/chao01.webp', './webp/chao02.webp',
-            './webp/arvore.png', './webp/nature.png', './webp/natureza.gif',
-            './webp/nuvens.webp', './webp/nuvenss.webp',
-            './webp/heart.png',
-            './webp/p1.png', './webp/p2.png', './webp/p3.png', './webp/p5.png', './webp/p6.png', './webp/p7.png', './webp/p9.png', './webp/p10.png', './webp/p11.png',
-            './webp/P13.png', './webp/P14.png', './webp/P15.png', './webp/P17.png',
-            './webp/I.png'
-        ]
+        // Adicione ao seu objeto ASSETS
+// Boss Assets - Certifique-se que esses arquivos existem na pasta webp
+    boss_activate: ['./webp/monstro_ativo.png', './webp/monstro_ativo1.png', './webp/monstro_ativo2.png'], 
+    boss_idle: [
+        './webp/mloop.png', './webp/mloop2.png', './webp/mloop3.png', './webp/mloop4.png',
+        './webp/mloop5.png', './webp/mloop6.png', './webp/mloop7.png', './webp/mloop8.png'
+    ],
+    boss_attack1: [
+        './webp/ataque.png', './webp/ataque1.png', './webp/ataque2.png', './webp/ataque3.png', './webp/ataque4.png',
+        './webp/ataque5.png', './webp/ataque6.png', './webp/ataque7.png', './webp/ataque8.png', './webp/ataque9.png',
+        './webp/ataque10.png', './webp/ataque11.png', './webp/ataque12.png', './webp/ataque13.png', './webp/ataque14.png', './webp/ataque15.png', './webp/ataque16.png'
+    ],
+    boss_attack2: [
+        './webp/ataque01.png', './webp/ataque02.png', './webp/ataque03.png', './webp/ataque04.png', './webp/ataque05.png',
+        './webp/ataque06.png', './webp/ataque07.png', './webp/ataque08.png', './webp/ataque09.png'
+    ],
+    boss_death: ['./webp/morte.png'], 
+    boss_falling_item: ['./webp/pedra_queda.png'],
+    
+    // Adicione os extras aqui para garantir que nada trave
+    extras: [
+        './webp/16.png', './webp/chao01.webp', './webp/chao02.webp',
+        './webp/arvore.png', './webp/nature.png', './webp/nuvens.webp', 
+        './webp/nuvenss.webp', './webp/heart.png', './webp/I.png',
+        './webp/p1.png', './webp/p2.png', './webp/p3.png', './webp/p5.png', './webp/p6.png', './webp/p7.png', './webp/p9.png', './webp/p10.png', './webp/p11.png',
+        './webp/P13.png', './webp/P14.png', './webp/P15.png', './webp/P17.png',
+    ]
     };
 
     // ===================================================================
@@ -776,39 +800,36 @@ this.stateMachine.addState('attacking', {
         }
     },
     update: (deltaTime, controls) => {
-        const weapon = WEAPONS[this.equippedWeapon];
-        
-        // VERIFICA SE O BOTÃO AINDA ESTÁ PRESSIONADO
-        if (!controls.attack) {
-            // Botão solto - volta para idle/walking
-            this.isAttacking = false;
-            if (this.isGrounded) {
-                this.stateMachine.setState(Math.abs(this.velocityX) > 0.1 ? 'walking' : 'idle');
-            } else {
-                this.stateMachine.setState('jumping');
-            }
-            return;
+    const weapon = WEAPONS[this.equippedWeapon];
+    
+    // Troca de animação dinâmica: se estiver andando, usa run_shoot, se parado, usa attack_pistol
+    if (weapon.name === 'Pistola') {
+        if (Math.abs(this.velocityX) > 0.5 && this.isGrounded) {
+            this.setAnimation(ASSETS.player_run_shoot, 60); // Ajuste a velocidade (60ms) conforme necessário
+        } else if (this.isGrounded) {
+            this.setAnimation(weapon.animation, 100);
         }
-        
-        // Se o botão ainda está pressionado, verifica se pode atirar novamente
-        if (weapon.type === 'ranged' && !weapon.chargeAnimation) {
-            const currentTime = performance.now();
-            const timeSinceLastShot = currentTime - this.lastShotTime;
-            
-            // Verifica se passou tempo suficiente desde o último tiro
-            if (timeSinceLastShot >= weapon.cooldown) {
-                // Dispara outro tiro
-                this.game.spawnPlayerProjectile(1.0);
-                this.lastShotTime = currentTime;
-                
-                // Reinicia a animação (opcional, para feedback visual)
-                this.frame = 0;
-                if (weapon.animation && weapon.animation[0]) {
-                    this.element.style.backgroundImage = `url('${weapon.animation[0]}')`;
-                }
-            }
+    }
+
+    if (!controls.attack) {
+        this.isAttacking = false;
+        if (this.isGrounded) {
+            this.stateMachine.setState(Math.abs(this.velocityX) > 0.1 ? 'walking' : 'idle');
+        } else {
+            this.stateMachine.setState('jumping');
         }
-    },
+        return;
+    }
+    
+    if (weapon.type === 'ranged' && !weapon.chargeAnimation) {
+        const currentTime = performance.now();
+        if (currentTime - this.lastShotTime >= weapon.cooldown) {
+            this.game.spawnPlayerProjectile(1.0);
+            this.lastShotTime = currentTime;
+            // Removi o reset de frame aqui para a animação de corrida não "engasgar"
+        }
+    }
+},
     exit: () => {
         this.isAttacking = false;
         this.lastShotTime = 0;
@@ -953,7 +974,8 @@ this.stateMachine.addState('attacking', {
                 }
             }
 
-            const canControlMovement = !this.isAttacking && !this.isBlocking && !this.isCrouching;
+            const isRangedAttacking = this.stateMachine.currentState?.name === 'attacking' && WEAPONS[this.equippedWeapon].type === 'ranged';
+const canControlMovement = (!this.isAttacking || isRangedAttacking) && !this.isBlocking && !this.isCrouching;
 
             if (canControlMovement) {
                 // Aceleração
@@ -1130,6 +1152,7 @@ this.stateMachine.addState('attacking', {
         }
     }
 
+
     // ===================================================================
     // CLASSE DOS PROJÉTEIS
     // ===================================================================
@@ -1141,7 +1164,7 @@ this.stateMachine.addState('attacking', {
                 asset = ASSETS.projectile_arrow;
                 width = 35;
                 height = 35;
-                usesGravity = false;
+                usesGravity = true;
                 const minSpeed = 7;
                 const maxSpeed = 22;
                 const speed = minSpeed + (maxSpeed - minSpeed) * chargePower;
@@ -1262,192 +1285,277 @@ this.stateMachine.addState('attacking', {
     // ===================================================================
     // LÓGICA E TIPOS DE INIMIGOS
     // ===================================================================
-    const enemyTypes = {
-        grounder: {
-            width: 250,
-            height: 250,
-            health: 12,
-            speed: 2.0,
-            attackRange: 60,
-            animations: {
-                walk: ASSETS.enemy_walk,
-                idle: [ASSETS.enemy_walk[0]]
-            },
-            init: function () {
-                this.setAnimation(this.animations.walk, 200);
-                this.stateMachine.addState('idle', {
-                    enter: () => {
-                        this.velocityX = 0;
-                    }
-                });
-                this.stateMachine.addState('walking', {
-                    enter: () => {
-                        this.setAnimation(this.animations.walk, 150);
-                    }
-                });
-                this.stateMachine.setState('walking');
-            },
-            brain: function () {
-                if (this.isParalyzed || this.isBeingKnockedBack) {
+    // ===================================================================
+// LÓGICA E TIPOS DE INIMIGOS
+// ===================================================================
+const enemyTypes = {
+    grounder: {
+        width: 250,
+        height: 250,
+        health: 12,
+        speed: 2.0,
+        attackRange: 60,
+        animations: {
+            walk: ASSETS.enemy_walk,
+            idle: [ASSETS.enemy_walk[0]]
+        },
+        init: function () {
+            this.setAnimation(this.animations.walk, 200);
+            this.stateMachine.addState('idle', {
+                enter: () => {
                     this.velocityX = 0;
-                    return;
                 }
-
-                const distX = this.player.x - this.x;
-                const distY = Math.abs(this.player.y - this.y);
-
-                if (Math.abs(distX) > 5) {
-                    this.direction = Math.sign(distX);
+            });
+            this.stateMachine.addState('walking', {
+                enter: () => {
+                    this.setAnimation(this.animations.walk, 150);
                 }
+            });
+            this.stateMachine.setState('walking');
+        },
+        brain: function () {
+            if (this.isParalyzed || this.isBeingKnockedBack) {
+                this.velocityX = 0;
+                return;
+            }
 
-                if (Math.abs(distX) > 400) {
-                    this.stateMachine.setState('walking');
-                    this.velocityX = this.direction * this.speed * 0.7;
-                    return;
-                }
+            const distX = this.player.x - this.x;
+            const distY = Math.abs(this.player.y - this.y);
 
+            if (Math.abs(distX) > 5) {
+                this.direction = Math.sign(distX);
+            }
+
+            if (Math.abs(distX) > 400) {
                 this.stateMachine.setState('walking');
+                this.velocityX = this.direction * this.speed * 0.7;
+                return;
+            }
 
-                if (Math.abs(distX) < 20) {
-                    this.velocityX = this.direction * (this.speed * 0.2);
-                } else if (Math.abs(distX) < 60) {
-                    this.velocityX = this.direction * (this.speed * 0.6);
-                } else {
-                    this.velocityX = this.direction * this.speed;
-                }
+            this.stateMachine.setState('walking');
 
-                if (Math.abs(distX) < 40 && distY < 40 && Math.random() < 0.05) {
-                    if (checkCollision(this.getHitbox(), this.player.getHitbox())) {
-                        this.player.takeDamage(1);
-                    }
-                }
+            if (Math.abs(distX) < 20) {
+                this.velocityX = this.direction * (this.speed * 0.2);
+            } else if (Math.abs(distX) < 60) {
+                this.velocityX = this.direction * (this.speed * 0.6);
+            } else {
+                this.velocityX = this.direction * this.speed;
+            }
 
-                if (this.isGrounded && this.player.y > this.y + 60 && Math.random() < 0.01) {
-                    this.velocityY = 12;
-                    this.isGrounded = false;
+            if (Math.abs(distX) < 40 && distY < 40 && Math.random() < 0.05) {
+                if (checkCollision(this.getHitbox(), this.player.getHitbox())) {
+                    this.player.takeDamage(1);
                 }
-            },
-            update: function (deltaTime, platforms) {
-                this.updatePhysics(deltaTime, platforms);
-                this.brain();
+            }
 
-                this.frameTimer += deltaTime;
-                if (this.frameTimer > 150 && this.currentAnimation === this.animations.walk) {
-                    this.frameTimer = 0;
-                    this.frame = (this.frame + 1) % this.animations.walk.length;
-                    this.element.style.backgroundImage = `url('${this.animations.walk[this.frame]}')`;
-                }
+            if (this.isGrounded && this.player.y > this.y + 60 && Math.random() < 0.01) {
+                this.velocityY = 12;
+                this.isGrounded = false;
             }
         },
-        flyer: {
-            width: 80,
-            height: 80,
-            health: 8,
-            speed: 1.8,
-            verticalSpeed: 1,
-            swoopSpeed: 4.5,
-            projectileAttackCooldown: 3000,
-            swoopAttackCooldown: 7000,
-            animations: { fly: ASSETS.enemy_fly },
-            init: function () {
-                this.y = 200 + Math.random() * 100;
-                this.targetY = this.y;
-                this.projectileAttackTimer = Math.random() * this.projectileAttackCooldown;
-                this.swoopAttackTimer = Math.random() * this.swoopAttackCooldown;
-                this.bobbingTimer = 0;
+        update: function (deltaTime, platforms) {
+            this.updatePhysics(deltaTime, platforms);
+            this.brain();
 
-                this.stateMachine.addState('flying', {
-                    enter: () => {
-                        this.speed = 1.8;
-                        this.targetY = 200 + Math.random() * 100;
-                    },
-                    update: (dT) => {
-                        this.projectileAttackTimer += dT;
-                        this.swoopAttackTimer += dT;
-                        this.bobbingTimer += dT;
-
-                        const distToPlayerX = Math.abs(this.player.x - this.x);
-
-                        if (this.swoopAttackTimer > this.swoopAttackCooldown && distToPlayerX < 300) {
-                            this.stateMachine.setState('swooping');
-                            return;
-                        }
-
-                        if (this.projectileAttackTimer > this.projectileAttackCooldown && distToPlayerX < 200) {
-                            this.game.spawnEnemyProjectile(this.x + (this.width / 2), this.y);
-                            this.projectileAttackTimer = 0;
-                        }
-
-                        if (this.bobbingTimer > 4000) {
-                            this.targetY = 180 + Math.random() * 120;
-                            this.bobbingTimer = 0;
-                        }
-
-                        const dX = this.player.x - this.x;
-                        if (Math.abs(dX) > 150) {
-                            this.velocityX = Math.sign(dX) * this.speed;
-                            this.direction = Math.sign(dX);
-                        } else {
-                            this.velocityX = 0;
-                        }
-
-                        if (Math.abs(this.y - this.targetY) > 2) {
-                            this.velocityY = Math.sign(this.targetY - this.y) * this.verticalSpeed;
-                        } else {
-                            this.velocityY = 0;
-                        }
-                    }
-                });
-
-                this.stateMachine.addState('swooping', {
-                    enter: () => {
-                        this.swoopTargetX = this.player.x;
-                        this.swoopTargetY = this.player.y + 20;
-                        this.speed = this.swoopSpeed;
-                        this.swoopAttackTimer = 0;
-                    },
-                    update: () => {
-                        const dX = this.swoopTargetX - this.x;
-                        const dY = this.swoopTargetY - this.y;
-                        const distance = Math.sqrt(dX * dX + dY * dY);
-
-                        if (distance < 30) {
-                            this.stateMachine.setState('flying');
-                            return;
-                        }
-
-                        this.velocityX = (dX / distance) * this.speed;
-                        this.velocityY = (dY / distance) * this.speed;
-                        this.direction = Math.sign(this.velocityX);
-                    },
-                    exit: () => {
-                        this.speed = 1.8;
-                        this.velocityY = 0;
-                    }
-                });
-
-                this.stateMachine.setState('flying');
-            },
-            update: function (dT, platforms) {
-                if (this.isParalyzed) {
-                    this.velocityX = 0;
-                    this.velocityY = 0;
-                    return;
-                }
-
-                if (this.isBeingKnockedBack) {
-                    this.updatePhysics(dT, platforms);
-                } else {
-                    this.x += this.velocityX;
-                    this.y += this.velocityY;
-                    if (this.y < 0) this.y = 0;
-                }
-
-                this.stateMachine.update(dT);
-                this.setAnimation(this.animations.fly);
+            this.frameTimer += deltaTime;
+            if (this.frameTimer > 150 && this.currentAnimation === this.animations.walk) {
+                this.frameTimer = 0;
+                this.frame = (this.frame + 1) % this.animations.walk.length;
+                this.element.style.backgroundImage = `url('${this.animations.walk[this.frame]}')`;
             }
         }
-    };
+    },
+    flyer: {
+        width: 80,
+        height: 80,
+        health: 8,
+        speed: 1.8,
+        verticalSpeed: 1,
+        swoopSpeed: 4.5,
+        projectileAttackCooldown: 3000,
+        swoopAttackCooldown: 7000,
+        animations: { fly: ASSETS.enemy_fly },
+        init: function () {
+            this.y = 200 + Math.random() * 100;
+            this.targetY = this.y;
+            this.projectileAttackTimer = Math.random() * this.projectileAttackCooldown;
+            this.swoopAttackTimer = Math.random() * this.swoopAttackCooldown;
+            this.bobbingTimer = 0;
+
+            this.stateMachine.addState('flying', {
+                enter: () => {
+                    this.speed = 1.8;
+                    this.targetY = 200 + Math.random() * 100;
+                },
+                update: (dT) => {
+                    this.projectileAttackTimer += dT;
+                    this.swoopAttackTimer += dT;
+                    this.bobbingTimer += dT;
+
+                    const distToPlayerX = Math.abs(this.player.x - this.x);
+
+                    if (this.swoopAttackTimer > this.swoopAttackCooldown && distToPlayerX < 300) {
+                        this.stateMachine.setState('swooping');
+                        return;
+                    }
+
+                    if (this.projectileAttackTimer > this.projectileAttackCooldown && distToPlayerX < 200) {
+                        this.game.spawnEnemyProjectile(this.x + (this.width / 2), this.y);
+                        this.projectileAttackTimer = 0;
+                    }
+
+                    if (this.bobbingTimer > 4000) {
+                        this.targetY = 180 + Math.random() * 120;
+                        this.bobbingTimer = 0;
+                    }
+
+                    const dX = this.player.x - this.x;
+                    if (Math.abs(dX) > 150) {
+                        this.velocityX = Math.sign(dX) * this.speed;
+                        this.direction = Math.sign(dX);
+                    } else {
+                        this.velocityX = 0;
+                    }
+
+                    if (Math.abs(this.y - this.targetY) > 2) {
+                        this.velocityY = Math.sign(this.targetY - this.y) * this.verticalSpeed;
+                    } else {
+                        this.velocityY = 0;
+                    }
+                }
+            });
+
+            this.stateMachine.addState('swooping', {
+                enter: () => {
+                    this.swoopTargetX = this.player.x;
+                    this.swoopTargetY = this.player.y + 20;
+                    this.speed = this.swoopSpeed;
+                    this.swoopAttackTimer = 0;
+                },
+                update: () => {
+                    const dX = this.swoopTargetX - this.x;
+                    const dY = this.swoopTargetY - this.y;
+                    const distance = Math.sqrt(dX * dX + dY * dY);
+
+                    if (distance < 30) {
+                        this.stateMachine.setState('flying');
+                        return;
+                    }
+
+                    this.velocityX = (dX / distance) * this.speed;
+                    this.velocityY = (dY / distance) * this.speed;
+                    this.direction = Math.sign(this.velocityX);
+                },
+                exit: () => {
+                    this.speed = 1.8;
+                    this.velocityY = 0;
+                }
+            });
+
+            this.stateMachine.setState('flying');
+        },
+        update: function (dT, platforms) {
+            if (this.isParalyzed) {
+                this.velocityX = 0;
+                this.velocityY = 0;
+                return;
+            }
+
+            if (this.isBeingKnockedBack) {
+                this.updatePhysics(dT, platforms);
+            } else {
+                this.x += this.velocityX;
+                this.y += this.velocityY;
+                if (this.y < 0) this.y = 0;
+            }
+
+            this.stateMachine.update(dT);
+            this.setAnimation(this.animations.fly);
+        }
+    },
+    // CORREÇÃO: sky_faller com coordenadas corrigidas
+    sky_faller: {
+        width: 120,
+        height: 120,
+        health: 8,
+        speed: 2.0,
+        animations: {
+            fall: ASSETS.enemy_walk,
+            walk: ASSETS.enemy_walk
+        },
+        init: function() {
+            this.state = 'falling'; // Estados: falling, landing, walking
+            this.fallSpeed = 10;
+            this.landingTimer = 0;
+            this.landingDuration = 300;
+            this.setAnimation(this.animations.fall, 150);
+        },
+        update: function(deltaTime, platforms) {
+            if (this.isParalyzed || this.isBeingKnockedBack) return;
+            
+            switch(this.state) {
+                case 'falling':
+                    // CORREÇÃO: Agora está correto - diminui Y até chegar a 0
+                    this.y -= this.fallSpeed;
+                    
+                    // Verifica se chegou no chão (y <= 0)
+                    if (this.y <= 0) {
+                        this.y = 0;
+                        this.isGrounded = true;
+                        this.state = 'landing';
+                        this.landingTimer = this.landingDuration;
+                        // Pequeno efeito de impacto
+                        this.element.classList.add('landing-impact');
+                        setTimeout(() => {
+                            this.element.classList.remove('landing-impact');
+                        }, 300);
+                    }
+                    break;
+                    
+                case 'landing':
+                    this.landingTimer -= deltaTime;
+                    if (this.landingTimer <= 0) {
+                        this.state = 'walking';
+                        this.setAnimation(this.animations.walk, 150);
+                    }
+                    break;
+                    
+                case 'walking':
+                    // Segue o jogador (agora usa this.player que foi passado na criação)
+                    if (!this.player) return;
+                    
+                    const distX = this.player.x - this.x;
+                    const distY = Math.abs(this.player.y - this.y);
+                    
+                    if (Math.abs(distX) > 5) {
+                        this.direction = Math.sign(distX);
+                    }
+                    
+                    // Movimento em direção ao jogador
+                    this.velocityX = this.direction * this.speed;
+                    
+                    // Aplica física normal
+                    this.updatePhysics(deltaTime, platforms);
+                    
+                    // Ataque se estiver perto
+                    if (Math.abs(distX) < 40 && distY < 40 && Math.random() < 0.05) {
+                        if (checkCollision(this.getHitbox(), this.player.getHitbox())) {
+                            this.player.takeDamage(1);
+                        }
+                    }
+                    break;
+            }
+            
+            // Animações
+            this.frameTimer += deltaTime;
+            if (this.frameTimer > 150 && this.currentAnimation) {
+                this.frameTimer = 0;
+                this.frame = (this.frame + 1) % this.currentAnimation.length;
+                this.element.style.backgroundImage = `url('${this.currentAnimation[this.frame]}')`;
+            }
+        }
+    }
+};
 
     // ===================================================================
     // CLASSE DOS INIMIGOS COM SISTEMA DE NÚMERO CRESCENTE
@@ -1776,6 +1884,8 @@ this.stateMachine.addState('attacking', {
             this.attack = false;
             this.attackDown = false;
             this.attackUp = false;
+            
+            
 
             this.keyMap = new Map();
             this.activeTouches = new Map();
@@ -2025,6 +2135,127 @@ this.stateMachine.addState('attacking', {
 
     window.addEventListener('load', preloadAssets);
 
+ class Boss extends Entity {
+    constructor(x, y, game) {
+        super(x, y, 600, 700); // Boss Gigante
+        this.game = game;
+        this.element.className = 'boss-entity';
+        this.health = 150; // Vida alta
+        this.isDead = false;
+        this.attackTimer = 0;
+        this.attackInterval = 4000;
+        this.hasSpawnedProjectiles = false; // Controle de spawn
+
+        this.initStates();
+        this.stateMachine.setState('activating');
+    }
+
+    initStates() {
+        this.stateMachine.addState('activating', {
+            enter: () => this.setAnimation(ASSETS.boss_activate, 200),
+            update: () => {
+                if (this.frame === ASSETS.boss_activate.length - 1) {
+                    this.stateMachine.setState('idle');
+                }
+            }
+        });
+
+        this.stateMachine.addState('idle', {
+            enter: () => this.setAnimation(ASSETS.boss_idle, 120),
+            update: (dt) => {
+                this.attackTimer += dt;
+                if (this.attackTimer >= this.attackInterval) {
+                    this.attackTimer = 0;
+                    this.stateMachine.setState(Math.random() > 0.5 ? 'attack1' : 'attack2');
+                }
+            }
+        });
+
+        this.stateMachine.addState('attack1', {
+            enter: () => {
+                this.setAnimation(ASSETS.boss_attack1, 100);
+                this.hasSpawnedProjectiles = false;
+            },
+            update: () => {
+                if (this.frame === 8 && !this.hasSpawnedProjectiles) {
+                    this.spawnFallingItems(12);
+                    this.hasSpawnedProjectiles = true;
+                }
+                if (this.frame === ASSETS.boss_attack1.length - 1) this.stateMachine.setState('idle');
+            }
+        });
+
+        this.stateMachine.addState('attack2', {
+            enter: () => {
+                this.setAnimation(ASSETS.boss_attack2, 100);
+                this.hasSpawnedProjectiles = false;
+            },
+            update: () => {
+                if (this.frame === 5 && !this.hasSpawnedProjectiles) {
+                    this.spawnFallingItems(20);
+                    this.hasSpawnedProjectiles = true;
+                }
+                if (this.frame === ASSETS.boss_attack2.length - 1) this.stateMachine.setState('idle');
+            }
+        });
+
+        this.stateMachine.addState('death', {
+            enter: () => {
+                this.isDead = true;
+                this.velocityX = 0;
+                this.setAnimation(ASSETS.boss_death, 1000);
+                this.element.style.filter = 'grayscale(1) brightness(0.5)';
+            }
+        });
+    }
+
+    spawnFallingItems(count) {
+        for (let i = 0; i < count; i++) {
+            setTimeout(() => {
+                const spawnX = this.game.player.x + (Math.random() * 1200 - 600);
+                this.game.spawnEnemyAtPosition(spawnX, 800, 'sky_faller');
+            }, i * 150);
+        }
+    }
+
+   getHitbox() {
+    if (this.isDead) return null;
+    return {
+        x: this.x + (this.width * 0.4), // Margem lateral de 10%
+        y: this.y + (this.height * 0.15),
+        width: this.width * 0.2,      // Ocupa 80% da largura visual
+        height: this.height * 0.2     // Quase a altura toda
+    };
+}
+
+    takeDamage(amount) {
+        if (this.isDead) return;
+        this.health -= amount;
+        this.element.style.filter = 'brightness(2) sepia(1)';
+        setTimeout(() => this.element.style.filter = '', 100);
+        if (this.health <= 0) this.stateMachine.setState('death');
+    }
+
+    update(dt) {
+        this.stateMachine.update(dt);
+        this.frameTimer += dt;
+        if (this.frameTimer > this.frameDuration) {
+            this.frameTimer = 0;
+            const anim = this.currentAnimation;
+            if (anim?.length > 1) {
+                this.frame = (this.frame + 1) % anim.length;
+                this.element.style.backgroundImage = `url('${anim[this.frame]}')`;
+            }
+        }
+    }
+ draw() {
+    // Adicione o scaleX para garantir que ele apareça (as vezes sem o scale ele fica invisível)
+    // E arredonde os valores para evitar trepidação visual
+    this.element.style.transform = `translateX(${Math.round(this.x)}px) translateY(${Math.round(-this.y)}px) scaleX(1)`;
+}
+}
+
+
     // ===================================================================
     // CLASSE PRINCIPAL DO JOGO
     // ===================================================================
@@ -2035,6 +2266,9 @@ this.stateMachine.addState('attacking', {
             this.player = new Player(0, 0, this);
             this.controls = new Controls();
             this.enemies = [];
+            this.boss = null;
+            this.spawnPoints = [];
+            this.defineSpawnPoints();
             this.platforms = [];
             this.playerProjectiles = [];
             this.enemyProjectiles = [];
@@ -2052,6 +2286,110 @@ this.stateMachine.addState('attacking', {
             this.createPickupItems();
             this.loop = this.loop.bind(this);
         }
+
+        
+spawnBoss(x, y) {
+    this.boss = new Boss(x, y, this);
+    this.gameWorld.appendChild(this.boss.element);
+}
+        
+        defineSpawnPoints() {
+        // Define posições específicas onde os inimigos vão spawnar
+        // Cada objeto tem: x, y (altura inicial), type, active (se deve spawnar)
+        this.spawnPoints = [
+            // Exemplo: spawn em x=1000, altura y=500, tipo sky_faller
+            { x: 1000, y: 500, type: 'sky_faller', active: true },
+            { x: 1500, y: 600, type: 'sky_faller', active: true },
+            { x: 2000, y: 400, type: 'sky_faller', active: true },
+            { x: 2500, y: 550, type: 'sky_faller', active: true },
+            { x: 3000, y: 450, type: 'sky_faller', active: true },
+            // Adicione quantos quiser
+        ];
+        
+        // Você pode também definir grupos de spawn
+        this.spawnGroups = [
+            {
+                name: 'primeira_onda',
+                points: [
+                    { x: 1200, y: 500, type: 'sky_faller' },
+                    { x: 1400, y: 600, type: 'sky_faller' },
+                    { x: 1600, y: 400, type: 'sky_faller' }
+                ],
+                activated: false
+            },
+            {
+                name: 'segunda_onda',
+                points: [
+                    { x: 2200, y: 550, type: 'sky_faller' },
+                    { x: 2400, y: 450, type: 'sky_faller' }
+                ],
+                activated: false
+            }
+        ];
+    }
+    
+    spawnEnemyAtPoint(spawnPoint) {
+        const enemyType = enemyTypes[spawnPoint.type];
+        if (!enemyType) return;
+        
+        const enemy = new Enemy(
+            spawnPoint.x, 
+            spawnPoint.y, // Começa na altura especificada (acima do chão)
+            enemyTypes[spawnPoint.type], 
+            this.player, 
+            this
+        );
+        
+        this.enemies.push(enemy);
+        this.gameWorld.appendChild(enemy.element);
+        
+        console.log(`Inimigo spawnado em (${spawnPoint.x}, ${spawnPoint.y})`);
+        return enemy;
+    }
+    
+    spawnEnemyGroup(groupName) {
+        const group = this.spawnGroups.find(g => g.name === groupName);
+        if (!group || group.activated) return;
+        
+        group.activated = true;
+        group.points.forEach(point => {
+            this.spawnEnemyAtPoint(point);
+        });
+        
+        console.log(`Grupo ${groupName} ativado com ${group.points.length} inimigos`);
+    }
+    // ... código existente ...
+    
+    // Método para spawnar inimigo em posição específica
+    spawnEnemyAtPosition(x, y, type = 'sky_faller') {
+        const spawnPoint = { x, y, type, active: true };
+        return this.spawnEnemyAtPoint(spawnPoint);
+    }
+    
+    // Método para spawnar vários inimigos em linha
+    spawnEnemiesInLine(startX, startY, count, spacing = 200, type = 'sky_faller') {
+        const enemies = [];
+        for (let i = 0; i < count; i++) {
+            const x = startX + (i * spacing);
+            const enemy = this.spawnEnemyAtPosition(x, startY, type);
+            if (enemy) enemies.push(enemy);
+        }
+        return enemies;
+    }
+    
+    // Método para spawnar em círculo/arco
+    spawnEnemiesInArc(centerX, centerY, radius, count, type = 'sky_faller') {
+        const enemies = [];
+        for (let i = 0; i < count; i++) {
+            const angle = (i / count) * Math.PI * 2;
+            const x = centerX + Math.cos(angle) * radius;
+            const y = centerY + Math.sin(angle) * radius;
+            const enemy = this.spawnEnemyAtPosition(x, y, type);
+            if (enemy) enemies.push(enemy);
+        }
+        return enemies;
+    }
+
 
         createPlatforms() {
             LEVEL_DATA.platforms.forEach(d => {
@@ -2099,21 +2437,36 @@ this.stateMachine.addState('attacking', {
             this.gameWorld.appendChild(e.element);
         }
 
-        spawnPlayerProjectile(chargePower) {
-            const weapon = WEAPONS[this.player.equippedWeapon];
-            if (weapon.type !== 'ranged') return;
+       spawnPlayerProjectile(chargePower) {
+    const weapon = WEAPONS[this.player.equippedWeapon];
+    if (weapon.type !== 'ranged') return;
 
-            const projX = this.player.direction > 0 ?
-                this.player.x + this.player.width - 150 :
-                this.player.x + 100;
-            const projY = this.player.y + this.player.height / 15;
+    let projX, projY;
 
-            const projectile = new Projectile(projX, projY, weapon.projectileType,
-                this.player.direction, chargePower, weapon.damage);
-            projectile.game = this;
-            this.playerProjectiles.push(projectile);
-            this.gameWorld.appendChild(projectile.element);
-        }
+    // AJUSTE ESPECÍFICO POR ARMA
+    if (this.player.equippedWeapon === 'bow') {
+        // Posição para a PEDRA
+        projX = this.player.direction > 0 ? 
+            this.player.x + this.player.width - 60 : // Ajuste o -80 (mais perto ou longe do corpo)
+            this.player.x + 20;                      // Ajuste o +30 (mais perto ou longe do corpo)
+        
+        projY = this.player.y + this.player.height / 9.5; // Ajuste o divisor para subir/descer a pedra
+    } else {
+        // Posição padrão para a PISTOLA (seu código atual)
+        projX = this.player.direction > 0 ?
+            this.player.x + this.player.width - 150 :
+            this.player.x + 100;
+        
+        projY = this.player.y + this.player.height / 15;
+    }
+
+    const projectile = new Projectile(projX, projY, weapon.projectileType,
+        this.player.direction, chargePower, weapon.damage);
+    
+    projectile.game = this;
+    this.playerProjectiles.push(projectile);
+    this.gameWorld.appendChild(projectile.element);
+}
 
         spawnEnemyProjectile(x, y) {
             const p = new Projectile(x, y, 'bullet', 0);
@@ -2132,6 +2485,20 @@ this.stateMachine.addState('attacking', {
             this.controls.update();
             this.player.update(deltaTime, this.controls, this.platforms);
 
+     // Dentro do update da classe Game, procure a parte do Boss:
+if (this.boss) {
+    this.boss.update(deltaTime);
+    const bossHitbox = this.boss.getHitbox();
+
+    // Projéteis do jogador
+    this.playerProjectiles.forEach(p => {
+        if (bossHitbox && checkCollision(p.getHitbox(), bossHitbox)) {
+            console.log("Boss atingido! Vida restante:", this.boss.health); // Debug
+            this.boss.takeDamage(p.damage);
+            p.destroy();
+        }
+    });
+}
             this.enemySpawnTimer += deltaTime;
             if (this.enemySpawnTimer > this.enemySpawnInterval && this.enemies.length < 5) {
                 this.enemySpawnTimer = 0;
@@ -2148,6 +2515,29 @@ this.stateMachine.addState('attacking', {
                 if (this.player.isBlocking && checkCollision(this.player.getDefenseHitbox(), e.getHitbox())) {
                     e.applyKnockback(this.player.direction);
                 }
+                
+                this.spawnPoints.forEach((point, index) => {
+            if (point.active) {
+                // Verifica se o jogador está perto o suficiente
+                const distanceToPlayer = Math.abs(this.player.x - point.x);
+                
+                // Spawn quando o jogador chega a 300 pixels do ponto
+                if (distanceToPlayer < 300) {
+                    this.spawnEnemyAtPoint(point);
+                    point.active = false; // Não spawna de novo
+                }
+            }
+        });
+        
+        // Sistema de spawn por grupos (ativados manualmente ou por trigger)
+        // Exemplo: ativar grupos baseado na posição do jogador
+        if (this.player.x > 1000 && !this.spawnGroups[0].activated) {
+            this.spawnEnemyGroup('primeira_onda');
+        }
+        
+        if (this.player.x > 2000 && !this.spawnGroups[1].activated) {
+            this.spawnEnemyGroup('segunda_onda');
+        }
 
                 const playerAttackHitbox = this.player.getAttackHitbox();
                 if (playerAttackHitbox) {
@@ -2237,6 +2627,7 @@ this.stateMachine.addState('attacking', {
             });
 
             this.player.draw();
+            if (this.boss) this.boss.draw();
             this.enemies.forEach(e => e.draw());
             this.playerProjectiles.forEach(p => p.draw());
             this.enemyProjectiles.forEach(p => p.draw());
@@ -2246,9 +2637,12 @@ this.stateMachine.addState('attacking', {
         drawDebug() {
             if (!CONFIG.DEBUG_MODE) return;
 
+           
+
             document.querySelectorAll('.debug-hitbox').forEach(el => el.remove());
 
             const drawBox = (hitbox, color, isFixed = false) => {
+                
                 if (!hitbox) return;
 
                 const box = document.createElement('div');
@@ -2271,6 +2665,8 @@ this.stateMachine.addState('attacking', {
             drawBox(this.player.getHitbox(), 'cyan');
             drawBox(this.player.getAttackHitbox(), 'red');
             drawBox(this.player.getDefenseHitbox(), 'yellow');
+            drawBox(this.boss?.getHitbox(), 'purple');
+            
 
             const groundCheckHitbox = {
                 x: this.player.x + this.player.width * 0.4,
@@ -2348,6 +2744,8 @@ this.stateMachine.addState('attacking', {
             this.ui.updateSpecial(this.specialCharge);
             this.ui.updateWeapons(this.player);
             this.spawnRandomEnemy();
+            this.boss = new Boss(500, 0, this); // Posicionado no X = 5000
+            this.gameWorld.appendChild(this.boss.element);
             this.loop(0);
         }
     }
