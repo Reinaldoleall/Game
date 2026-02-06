@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introdução - O Sonho</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Quicksand', 'Verdana', sans-serif;
+        }
+
+        /* Camada de Estrelas Piscando */
+        #particles-stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2; /* Acima da imagem, abaixo da legenda */
+        }
+
+        .container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+
+        /* Moldura de cada quadro */
+        .frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            animation: crossfadeScene 7s ease-in-out forwards; 
+        }
+
+        /* Efeito Ken Burns (Zoom Lento) na imagem */
+        .frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1);
+            animation: kenBurns 7.5s linear forwards;
+        }
+
+        /* Estilo da legenda */
+        .caption {
+            position: absolute;
+            bottom: 12%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            color: white;
+            padding: 25px 40px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.3rem;
+            line-height: 1.6;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+            z-index: 10;
+        }
+
+        /* Delays para o Crossfade */
+        .frame:nth-child(2) { animation-delay: 0s; }
+        .frame:nth-child(3) { animation-delay: 6s; }
+        .frame:nth-child(4) { animation-delay: 12s; }
+        .frame:nth-child(5) { animation-delay: 18s; }
+        .frame:nth-child(6) { animation-delay: 24s; }
+        .frame:nth-child(7) { animation-delay: 30s; }
+        .frame:nth-child(8) { animation-delay: 36s; }
+        .frame:nth-child(9) { animation-delay: 42s; }
+
+        @keyframes crossfadeScene {
+            0% { opacity: 0; filter: blur(10px); }
+            15% { opacity: 1; filter: blur(0px); }
+            85% { opacity: 1; filter: blur(0px); }
+            100% { opacity: 0; }
+        }
+
+        @keyframes kenBurns {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        .frame:last-child {
+            animation: finalScene 7s ease-in-out forwards;
+            animation-delay: 42s;
+        }
+
+        @keyframes finalScene {
+            0% { opacity: 0; }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .vignette {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.8) 100%);
+            pointer-events: none;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="particles-stars"></div>
+
+    <div class="container">
+        <div class="vignette"></div>
+
+        <div class="frame">
+            <img src="./intro1.png" alt="Quadro 1">
+            <div class="caption">"Dorme bem, meu pequeno aventureiro. O dia foi cheio, e agora é hora de recarregar as energias para as próximas jornadas."</div>
+        </div>
+
+        <div class="frame">
+            <img src="./intro2.png" alt="Quadro 2">
+            <div class="caption">"Feche os olhos e deixe a imaginação voar. O mundo dos sonhos te espera, um lugar onde tudo é possível."</div>
+        </div>
+
+        <div class="frame">
+            <img src="./intro3.png" alt="Quadro 3">
+            <div class="caption">"Que seus sonhos sejam tão grandiosos quanto você. Explore cada canto desse universo mágico que só você pode criar."</div>
+        </div>
+
+        <div class="frame">
+            <img src="./intro4.png" alt="Quadro 4">
+            <div class="caption">"A aventura começa agora. Sinto que você está prestes a embarcar em algo incrível, algo que só a sua mente brilhante pode conceber."</div>
+        </div>
+
+        <div class="frame">
+            <img src="./intro5.png" alt="Quadro 5">
+            <div class="caption">"Não tenha medo, meu filho. Em seus sonhos, você é o herói, o explorador, o criador de mundos."</div>
+        </div>
+
+        <div class="frame">
+            <img src="./intro8.png" alt="Quadro 8">
+            <div class="caption">"Navegue por mares desconhecidos, encontre tesouros escondidos e descubra segredos que só os sonhadores conhecem."</div>
+        </div>
+
+        <div class="frame">
+            <img src="./intro7.png" alt="Quadro 7">
+            <div class="caption">"Voe alto, alcance as estrelas e deixe sua luz brilhar. O mundo precisa da sua magia, da sua criatividade."</div>
+        </div>
+
+        <div class="frame">
+            <img src="./intro6.png" alt="Quadro 6">
+            <div class="caption">"E quando acordar, traga um pouco dessa magia de volta para nós. Sei que você fará coisas incríveis, meu filho. Estou sempre aqui, torcendo por você."</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Configuração para Estrelas Piscando (Static Blink)
+        particlesJS("particles-stars", {
+            "particles": {
+                "number": { "value": 150, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#ffffff" },
+                "shape": { "type": "circle" },
+                "opacity": {
+                    "value": 1,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 1.5,
+                        "opacity_min": 0,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 2.5,
+                    "random": true,
+                    "anim": { "enable": false }
+                },
+                "line_linked": { "enable": false },
+                "move": {
+                    "enable": true,
+                    "speed": 0.2, // Movimento quase imperceptível
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out"
+                }
+            }
+        });
+
+        // Redireciona após o fim da animação (aprox 50s)
+        setTimeout(function() {
+            window.location.href = "fase1.html";
+        }, 49500);
+    </script>
+
+</body>
+</html>

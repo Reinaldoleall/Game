@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <title></title>
+
+
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+  <!-- Adicione isto logo após a tag <body> -->
+
+    <div id="game-scaler">
+        <div id="game-container">
+            <div id="sky-background">
+                <div class="fog-layer"></div>
+            </div>
+
+            <div id="boss-ui" style="display: none;">
+                <div id="boss-name">Enraizado</div>
+                <div id="boss-health-container">
+                    <div id="boss-health-bar"></div>
+                </div>
+            </div>
+
+            <div id="game-world">
+                <!-- Nuvens 1 -->
+                <div class="cloud-layer-1"></div>
+                <div class="cloud-layer-2"></div>
+
+                <!-- Nuvens 2 -->
+                <div class="cloud-layer-3"></div>
+                <div class="cloud-layer-4"></div>
+
+                <!-- Árvores -->
+                <div id="arvore1"></div>
+                <div id="arvore2"></div>
+
+                <!-- Seta animada -->
+                <div id="seta"></div>
+            </div>
+
+            <div class="layer" id="foreground"></div>
+            <div class="layer" id="ground"></div>
+            <div class="damage-effect"></div>
+
+            <div id="ui-container">
+                <div id="hud-dashboard">
+                    <div class="hud-row top">
+                        <div class="health-container"></div>
+                        <div class="points-display-compact">0</div>
+                    </div>
+                    <div class="hud-row bottom">
+                        <div id="weapon-slots-container"></div>
+                        <div class="special-container">
+                            <div class="special-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="controls-overlay">
+                <div class="analog-container">
+                    <div class="analog-base"></div>
+                    <div class="analog-stick"></div>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn" id="btn-jump">Pular</button>
+                    <button class="action-btn" id="btn-attack">Atacar</button>
+                    <button class="action-btn" id="btn-block">Def</button>
+                    <button class="action-btn" id="btn-special">SP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Coloque isto ANTES do fechamento da tag </body> -->
+    <div id="preload-images" style="display: none;">
+        <!-- Player -->
+        <img src="./webp/I.webp" alt="">
+        <img src="./webp/I1.webp" alt="">
+        <img src="./webp/I2.webp" alt="">
+        <img src="./webp/I3.webp" alt="">
+        <img src="./webp/I4.webp" alt="">
+        <img src="./webp/I5.webp" alt="">
+        <img src="./webp/I6.webp" alt="">
+
+        <!-- Walk -->
+        <img src="./webp/1.webp" alt="">
+        <img src="./webp/2.webp" alt="">
+        <img src="./webp/3.webp" alt="">
+        <img src="./webp/4.webp" alt="">
+        <img src="./webp/5.webp" alt="">
+        <img src="./webp/6.webp" alt="">
+        <img src="./webp/7.webp" alt="">
+        <img src="./webp/8.webp" alt="">
+        <img src="./webp/9.webp" alt="">
+        <img src="./webp/10.webp" alt="">
+        <img src="./webp/11.webp" alt="">
+        <img src="./webp/12.webp" alt="">
+        <img src="./webp/13.webp" alt="">
+        <img src="./webp/14.webp" alt="">
+        <img src="./webp/15.webp" alt="">
+
+        <!-- Run Shoot -->
+        <img src="./webp/1c.webp" alt="">
+        <img src="./webp/2c.webp" alt="">
+        <img src="./webp/3c.webp" alt="">
+        <img src="./webp/4c.webp" alt="">
+        <img src="./webp/5c.webp" alt="">
+        <img src="./webp/6c.webp" alt="">
+        <img src="./webp/7c.webp" alt="">
+        <img src="./webp/8c.webp" alt="">
+        <img src="./webp/9c.webp" alt="">
+        <img src="./webp/10c.webp" alt="">
+        <img src="./webp/11c.webp" alt="">
+        <img src="./webp/12c.webp" alt="">
+        <img src="./webp/13c.webp" alt="">
+        <img src="./webp/14c.webp" alt="">
+        <img src="./webp/15c.webp" alt="">
+        <img src="./webp/16c.webp" alt="">
+
+        <!-- Jump -->
+        <img src="./webp/p.webp" alt="">
+        <img src="./webp/p3.webp" alt="">
+        <img src="./webp/p4.webp" alt="">
+        <img src="./webp/p9.webp" alt="">
+        <img src="./webp/p11.webp" alt="">
+        <img src="./webp/p15.webp" alt="">
+        <img src="./webp/p16.webp" alt="">
+        <img src="./webp/p17.webp" alt="">
+
+        <!-- Crouch -->
+        <img src="./webp/b1.webp" alt="">
+        <img src="./webp/b2.webp" alt="">
+        <img src="./webp/b3.webp" alt="">
+        <img src="./webp/b4.webp" alt="">
+        <img src="./webp/b5.webp" alt="">
+        <img src="./webp/b6.webp" alt="">
+        <img src="./webp/b7.webp" alt="">
+        <img src="./webp/b8.webp" alt="">
+        <img src="./webp/b9.webp" alt="">
+        <img src="./webp/b10.webp" alt="">
+
+        <!-- Shield -->
+        <img src="./webp/esc.webp" alt="">
+        <img src="./webp/esc1.webp" alt="">
+        <img src="./webp/esc2.webp" alt="">
+        <img src="./webp/esc3.webp" alt="">
+        <img src="./webp/esc4.webp" alt="">
+        <img src="./webp/esc5.webp" alt="">
+        <img src="./webp/esc6.webp" alt="">
+        <img src="./webp/esc7.webp" alt="">
+        <img src="./webp/esc8.webp" alt="">
+        <img src="./webp/esc9.webp" alt="">
+        <img src="./webp/esc10.webp" alt="">
+        <img src="./webp/esc11.webp" alt="">
+        <img src="./webp/esc12.webp" alt="">
+        <img src="./webp/esc13.webp" alt="">
+        <img src="./webp/esc14.webp" alt="">
+        <img src="./webp/esc15.webp" alt="">
+        <img src="./webp/esc16.webp" alt="">
+
+        <!-- Enemy -->
+        <img src="./webp/dinossauro_morto.webp" alt="">
+
+        <!-- Enemy Walk -->
+        <img src="./webp/d.webp" alt="">
+        <img src="./webp/d1.webp" alt="">
+        <img src="./webp/d2.webp" alt="">
+        <img src="./webp/d3.webp" alt="">
+        <img src="./webp/d4.webp" alt="">
+        <img src="./webp/d5.webp" alt="">
+        <img src="./webp/d6.webp" alt="">
+        <img src="./webp/d7.webp" alt="">
+        <img src="./webp/d8.webp" alt="">
+        <img src="./webp/d9.webp" alt="">
+        <img src="./webp/d10.webp" alt="">
+        <img src="./webp/d11.webp" alt="">
+        <img src="./webp/d12.webp" alt="">
+        <img src="./webp/d13.webp" alt="">
+        <img src="./webp/d14.webp" alt="">
+
+        <!-- Flying Enemy -->
+        <img src="./webp/nave.webp" alt="">
+        <img src="./webp/nave1.webp" alt="">
+        <img src="./webp/nave2.webp" alt="">
+        <img src="./webp/nave3.webp" alt="">
+        <img src="./webp/nave4.webp" alt="">
+        <img src="./webp/nave5.webp" alt="">
+        <img src="./webp/nave6.webp" alt="">
+        <img src="./webp/nave7.webp" alt="">
+        <img src="./webp/nave8.webp" alt="">
+        <img src="./webp/nave9.webp" alt="">
+
+        <!-- Attacks -->
+        <img src="./webp/espada1.webp" alt="">
+        <img src="./webp/espada2.webp" alt="">
+        <img src="./webp/espada3.webp" alt="">
+        <img src="./webp/chute.webp" alt="">
+        <img src="./webp/a1.webp" alt="">
+        <img src="./webp/a2.webp" alt="">
+        <img src="./webp/a3.webp" alt="">
+        <img src="./webp/a4.webp" alt="">
+        <img src="./webp/a5.webp" alt="">
+        <img src="./webp/a6.webp" alt="">
+        <img src="./webp/a7.webp" alt="">
+        <img src="./webp/a8.webp" alt="">
+        <img src="./webp/a9.webp" alt="">
+        <img src="./webp/a10.webp" alt="">
+        <img src="./webp/a11.webp" alt="">
+        <img src="./webp/a12.webp" alt="">
+        <img src="./webp/defesa.webp" alt="">
+
+        <!-- Weapons -->
+        <img src="./webp/pedra.webp" alt="">
+        <img src="./webp/tiro.webp" alt="">
+        <img src="./webp/espada.webp" alt="">
+        <img src="./webp/coin.webp" alt="">
+
+        <!-- Boss -->
+        <img src="./webp/boss_barrier.webp" alt="">
+        <img src="./webp/monstro_ativo.webp" alt="">
+        <img src="./webp/monstro_ativo1.webp" alt="">
+        <img src="./webp/monstro_ativo2.webp" alt="">
+        <img src="./webp/mloop.webp" alt="">
+        <img src="./webp/mloop2.webp" alt="">
+        <img src="./webp/mloop3.webp" alt="">
+        <img src="./webp/mloop4.webp" alt="">
+        <img src="./webp/mloop5.webp" alt="">
+        <img src="./webp/mloop6.webp" alt="">
+        <img src="./webp/mloop7.webp" alt="">
+        <img src="./webp/mloop8.webp" alt="">
+
+        <!-- Boss Attacks -->
+        <img src="./webp/ataque.webp" alt="">
+        <img src="./webp/ataque1.webp" alt="">
+        <img src="./webp/ataque2.webp" alt="">
+        <img src="./webp/ataque3.webp" alt="">
+        <img src="./webp/ataque4.webp" alt="">
+        <img src="./webp/ataque5.webp" alt="">
+        <img src="./webp/ataque6.webp" alt="">
+        <img src="./webp/ataque7.webp" alt="">
+        <img src="./webp/ataque8.webp" alt="">
+        <img src="./webp/ataque9.webp" alt="">
+        <img src="./webp/ataque10.webp" alt="">
+        <img src="./webp/ataque11.webp" alt="">
+        <img src="./webp/ataque12.webp" alt="">
+        <img src="./webp/ataque13.webp" alt="">
+        <img src="./webp/ataque14.webp" alt="">
+        <img src="./webp/ataque15.webp" alt="">
+        <img src="./webp/ataque16.webp" alt="">
+        <img src="./webp/ataque01.webp" alt="">
+        <img src="./webp/ataque02.webp" alt="">
+        <img src="./webp/ataque03.webp" alt="">
+        <img src="./webp/ataque04.webp" alt="">
+        <img src="./webp/ataque05.webp" alt="">
+        <img src="./webp/ataque06.webp" alt="">
+        <img src="./webp/ataque07.webp" alt="">
+        <img src="./webp/ataque08.webp" alt="">
+        <img src="./webp/ataque09.webp" alt="">
+        <img src="./webp/morte.webp" alt="">
+
+        <!-- New Enemy -->
+        <img src="./webp/bebe6.webp" alt="">
+        <img src="./webp/bebe.webp" alt="">
+        <img src="./webp/bebe1.webp" alt="">
+        <img src="./webp/bebe2.webp" alt="">
+        <img src="./webp/bebe3.webp" alt="">
+        <img src="./webp/bebe4.webp" alt="">
+        <img src="./webp/bebe5.webp" alt="">
+
+        <!-- Extras (escolha os principais) -->
+        <img src="./webp/chao01.webp" alt="">
+        <img src="./webp/chao02.webp" alt="">
+        <img src="./webp/arvore.webp" alt="">
+        <img src="./webp/nature.webp" alt="">
+        <img src="./webp/nuvens.webp" alt="">
+        <img src="./webp/nuvenss.webp" alt="">
+        <img src="./webp/heart.webp" alt="">
+        <img src="./webp/nature.webp" alt="">
+        <img src="./webp/chao01.webp" alt="">
+
+        <!-- Nuvens -->
+        <img src="./webp/nuvens.webp" alt="">
+        <img src="./webp/nuvenss.webp" alt="">
+
+        <!-- Árvores -->
+        <img src="./webp/arvore.webp" alt="">
+
+        <!-- Seta animada -->
+        <img src="./webp/seta.webp" alt="">
+        <img src="./webp/seta1.webp" alt="">
+        <img src="./webp/seta2.webp" alt="">
+        <img src="./webp/seta3.webp" alt="">
+        <img src="./webp/seta4.webp" alt="">
+        <img src="./webp/seta5.webp" alt="">
+        <img src="./webp/seta6.webp" alt="">
+        <img src="./webp/bossdeath(1).webp" alt="">
+        <img src="./webp/bossdeath(2).webp" alt="">
+        <img src="./webp/bossdeath(3).webp" alt="">
+        <img src="./webp/bossdeath(4).webp" alt="">
+        <img src="./webp/bossdeath(5).webp" alt="">
+        <img src="./webp/bossdeath(6).webp" alt="">
+        <img src="./webp/bossdeath(7).webp" alt="">
+        <img src="./webp/bossdeath(8).webp" alt="">
+        <img src="./webp/bossdeath(9).webp" alt="">
+        <img src="./webp/bossdeath(10).webp" alt="">
+        <img src="./webp/bossdeath(11).webp" alt="">
+        <img src="./webp/bossdeath(12).webp" alt="">
+        <img src="./webp/bossdeath(13).webp" alt="">
+        <img src="./webp/bossdeath(14).webp" alt="">
+        <img src="./webp/bossdeath(15).webp" alt="">
+        <img src="./webp/bossdeath(16).webp" alt="">
+        <img src="./webp/bossdeath(17).webp" alt="">
+        <img src="./webp/bossdeath(18).webp" alt="">
+        <img src="./webp/bossdeath(19).webp" alt="">
+        <img src="./webp/bossdeath(20).webp" alt="">
+        <img src="./webp/bossdeath(21).webp" alt="">
+        <img src="./webp/bossdeath(22).webp" alt="">
+        <img src="./webp/bossdeath(23).webp" alt="">
+        <img src="./webp/bossdeath(24).webp" alt="">
+        <img src="./webp/bossdeath(25).webp" alt="">
+        <img src="./webp/bossdeath(26).webp" alt="">
+        <img src="./webp/bossdeath(27).webp" alt="">
+        <img src="./webp/bossdeath(28).webp" alt="">
+        <img src="./webp/bossdeath(29).webp" alt="">
+        <img src="./webp/bossdeath(30).webp" alt="">
+        <img src="./webp/bossdeath(31).webp" alt="">
+        <img src="./webp/bossdeath(32).webp" alt="">
+        <img src="./webp/bossdeath(33).webp" alt="">
+    </div>
+    <script src="https://pixijs.download/release/pixi.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+    <script src="./js/game.js"></script>
+</body>
+
+</html>

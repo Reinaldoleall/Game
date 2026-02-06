@@ -1,0 +1,145 @@
+/* ===================================================================
+   HUD DASHBOARD (REDESIGN)
+   =================================================================== */
+#hud-dashboard {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: rgba(10, 10, 15, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    pointer-events: auto;
+    /* Permite clicar nas armas */
+    min-width: 180px;
+    transform: translateZ(0);
+}
+
+.hud-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.hud-row.top {
+    justify-content: space-between;
+}
+
+/* Container de Vida (Resetando posição) */
+.health-container {
+    position: static !important;
+    /* Remove absolute */
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    display: flex;
+    gap: 4px;
+}
+
+.health-heart {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    transform: rotate(45deg);
+    /* Estilo diamante opcional, ou manter normal */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    background-color: #ff4757;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.health-heart.empty {
+    background-color: #2f3542;
+    opacity: 0.5;
+    border-color: #57606f;
+}
+
+/* Display de Pontos Compacto */
+.points-display-compact {
+    font-family: 'Quicksand', sans-serif;
+    /* Assumindo font do index */
+    font-weight: 700;
+    color: #f1c40f;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.points-display-compact::before {
+    content: '★';
+    /* Ícone de estrela/ponto */
+    font-size: 0.9rem;
+    color: #f39c12;
+}
+
+/* Slots de Arma (Resetando posição) */
+#weapon-slots-container {
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+    border: none !important;
+    display: flex;
+    gap: 6px;
+}
+
+.weapon-slot {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.weapon-slot.selected {
+    border-color: #f1c40f;
+    box-shadow: 0 0 10px rgba(241, 196, 15, 0.3);
+    transform: scale(1.1);
+    opacity: 1;
+    background-color: rgba(241, 196, 15, 0.1);
+}
+
+/* Barra Especial (Resetando posição) */
+.special-container {
+    position: static !important;
+    /* Remove absolute */
+    background: rgba(0, 0, 0, 0.3) !important;
+    border-radius: 4px !important;
+    padding: 2px !important;
+    display: flex !important;
+    /* Garante visibilidade */
+    height: 10px;
+    flex-grow: 1;
+}
+
+.special-bar {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    gap: 1px;
+}
+
+.special-segment {
+    flex: 1;
+    height: 100%;
+    background-color: #333;
+    border-radius: 1px;
+}
+
+.special-segment.charged {
+    background-color: #00a8ff;
+    box-shadow: 0 0 5px #00a8ff;
+}
+
+/* Esconder o container antigo de pontos se ele for recriado por JS */
+#points-container {
+    display: none !important;
+}

@@ -1,0 +1,1207 @@
+/* ===================================================================
+   RESET E OTIMIZAÇÕES PARA WEBVIEW ANDROID
+   =================================================================== */
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    outline: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+    -webkit-overflow-scrolling: touch;
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    touch-action: none;
+}
+
+/* ===================================================================
+   ESTRUTURA PRINCIPAL
+   =================================================================== */
+/* ===================================================================
+   ESTRUTURA PRINCIPAL COM PARALLAX
+   =================================================================== */
+/* ===================================================================
+   PARALLAX BACKGROUND (CORRIGIDO - MOVIMENTO CONTRÁRIO)
+   =================================================================== */
+#parallax-nature-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    
+    height: 100%;
+    background-image: url('../webp/nature.webp');
+    background-repeat: repeat-x;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    pointer-events: none;
+    
+    /* Otimização de performance */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    image-rendering: auto;
+    
+    /* Suavidade */
+    transition: transform 0.05s linear;
+}
+
+/* Remove o background do body */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black !important; /* Fundo preto sólido */
+    overflow: hidden;
+    touch-action: none;
+}
+
+#game-scaler {
+    position: relative;
+    width: 1366px;
+    height: 768px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    transform-origin: center center;
+    border-radius: 0px;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    image-rendering: auto !important;
+    z-index: 1;
+}
+
+/* ===================================================================
+   ANIMAÇÕES PRINCIPAIS
+   =================================================================== */
+@keyframes levitar {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes rodarSeta {
+    0%, 100% { background-image: url('../webp/seta.webp'); }
+    16% { background-image: url('../webp/seta1.webp'); }
+    33% { background-image: url('../webp/seta2.webp'); }
+    50% { background-image: url('../webp/seta3.webp'); }
+    66% { background-image: url('../webp/seta4.webp'); }
+    82% { background-image: url('../webp/seta5.webp'); }
+    92% { background-image: url('../webp/seta6.webp'); }
+}
+
+@keyframes starsMove {
+    0% { transform: translateX(0) translateZ(0); }
+    100% { transform: translateX(-60%) translateZ(0); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(var(--translateX, 0), var(--translateY, 0)) scaleX(var(--direction, 1)) translateY(0px) translateZ(0); }
+    50% { transform: translate(var(--translateX, 0), var(--translateY, 0)) scaleX(var(--direction, 1)) translateY(-4px) translateZ(0); }
+}
+
+@keyframes flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes paralyzed-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    75% { transform: translateX(2px); }
+}
+
+@keyframes damagePulse {
+    0% { transform: scale(0.5) translateZ(0); }
+    50% { transform: scale(1.5) translateZ(0); }
+    100% { transform: scale(1) translateZ(0); }
+}
+
+@keyframes damageFloat {
+    0% { opacity: 1; margin-top: 0; transform: translateZ(0); }
+    100% { opacity: 0; margin-top: -80px; transform: translateZ(0); }
+}
+
+@keyframes landingShake {
+    0% { transform: scale(1.2); }
+    50% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+@keyframes heartGrow {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes heartPop {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+}
+
+@keyframes pointsFloat {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-50px); opacity: 0; }
+}
+
+/* ===================================================================
+   ELEMENTOS DO CENÁRIO
+   =================================================================== */
+/* Fundo principal */
+#sky-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    
+    background-repeat: no-repeat;
+    overflow: hidden;
+    transform: translateZ(0);
+}
+
+/* Camadas do cenário */
+.layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+}
+
+#game-world {
+    position: absolute;
+    bottom: 103px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 103px);
+    z-index: 5;
+    transform: translateZ(0);
+}
+
+#game-world * {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+#ground {
+    background-image: url('../webp/chao01.webp');
+    background-repeat: repeat-x;
+    background-size: auto 100%;
+    bottom: -199px;
+    height: 510px;
+    z-index: 2;
+    top: auto;
+    transform: translateZ(0);
+}
+
+#foreground {
+    background-image: url('../webp/chao01.webp');
+    background-size: auto 100%;
+    background-repeat: repeat-x;
+    bottom: -210px;
+    top: auto;
+    height: 500px;
+    z-index: 26;
+    pointer-events: none;
+    filter: brightness(0.3) blur(1px);
+    transform: translateZ(0);
+}
+
+/* ===================================================================
+   ELEMENTOS DO JOGO (NUVENS, ÁRVORES, SETA)
+   =================================================================== */
+/* Nuvens */
+.cloud-layer-1,
+.cloud-layer-2,
+.cloud-layer-3,
+.cloud-layer-4 {
+    position: absolute;
+    pointer-events: none;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: levitar 10s ease-in-out infinite;
+}
+
+.cloud-layer-1 {
+    left: 110px;
+    bottom: -50px;
+    width: 300px;
+    height: 300px;
+    background-image: url('../webp/nuvens.webp');
+}
+
+.cloud-layer-2 {
+    left: 110px;
+    bottom: -70px;
+    width: 300px;
+    height: 300px;
+    background-image: url('../webp/nuvenss.webp');
+    z-index: 9;
+}
+
+.cloud-layer-3 {
+    left: 910px;
+    bottom: -20px;
+    width: 300px;
+    height: 300px;
+    background-image: url('../webp/nuvens.webp');
+}
+
+.cloud-layer-4 {
+    left: 910px;
+    bottom: -30px;
+    width: 300px;
+    height: 300px;
+    background-image: url('../webp/nuvenss.webp');
+    z-index: 9;
+}
+
+/* Árvores */
+#arvore1,
+#arvore2 {
+    position: absolute;
+    pointer-events: none;
+    background: url('../webp/arvore.webp') center/contain no-repeat;
+    width: 800px;
+    height: 800px;
+    bottom: -230px;
+}
+
+#arvore1 {
+    left: 1010px;
+    filter: brightness(0.3) blur(1px);
+    z-index: 27;
+}
+
+#arvore2 {
+    left: 2110px;
+    z-index: 1;
+}
+
+/* Seta animada */
+#seta {
+    position: absolute;
+    left: 6290px;
+    bottom: -15px;
+    width: 100px;
+    height: 100px;
+    pointer-events: none;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 1;
+    animation: rodarSeta 1.5s infinite ease-in-out;
+    transition: background-image 0.3s ease-in-out;
+}
+
+/* ===================================================================
+   ENTIDADES DO JOGO
+   =================================================================== */
+.character,
+.enemy,
+.projectile,
+.pickup-item,
+.boss-entity {
+    position: absolute;
+    bottom: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    transform-origin: center bottom;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    image-rendering: auto !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    will-change: transform;
+    contain: layout style paint;
+}
+
+.character {
+    width: 100px;
+    height: 120px;
+    bottom: -10px;
+    z-index: 8;
+}
+
+.enemy {
+    width: 80px;
+    height: 80px;
+    bottom: -10px;
+    z-index: 7;
+}
+
+.projectile {
+    width: 40px;
+    height: 15px;
+    z-index: 7;
+}
+
+.pickup-item {
+    width: 50px;
+    height: 50px;
+    z-index: 6;
+}
+
+
+
+.boss-entity {
+    bottom: 0;
+    z-index: 5;
+    pointer-events: none;
+    transition: filter 0.1s;
+    transform-origin: bottom center;
+}
+
+/* Adicione isso ao seu CSS */
+#boss-ui {
+    position: fixed;
+    top: 47px;
+    left: 38%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 18px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 3px solid #8B0000;
+    border-radius: 15px;
+    z-index: 1000;
+    display: none;
+    padding: 3px;
+    box-shadow: 0 0 20px rgba(139, 0, 0, 0.7);
+}
+
+#boss-health-container {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+#boss-health-bar {
+    height: 100%;
+    background: linear-gradient(to right, #FF0000, #FF4500, #FFA500);
+    border-radius: 8px;
+    width: 100%;
+    transition: width 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+#boss-health-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.3) 50%, 
+        transparent 100%);
+    animation: shine 2s infinite linear;
+}
+
+#boss-name {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #FFD700;
+    font-weight: bold;
+    font-size: 18px;
+    text-shadow: 0 0 10px #FF0000;
+    white-space: nowrap;
+    font-family: 'Arial', sans-serif;
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Classes de estado */
+.character.animating {
+    animation-timing-function: steps(1, end) !important;
+    animation-fill-mode: both !important;
+}
+
+.invulnerable {
+    animation: flicker 0.15s infinite;
+}
+
+.paralyzed {
+    animation: paralyzed-shake 0.2s infinite;
+}
+
+.landing-impact {
+    animation: landingShake 0.3s ease-out;
+}
+
+.health-heart.extra-heart {
+    background-color: #00ffff;
+    border-color: #fff;
+}
+
+/* ===================================================================
+   EFEITOS VISUAIS
+   =================================================================== */
+.damage-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 0, 0, 0.4);
+    z-index: 1001;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.1s;
+    transform: translateZ(0);
+}
+
+.damage-effect.active {
+    opacity: 1;
+}
+
+/* ===================================================================
+   INTERFACE DO USUÁRIO
+   =================================================================== */
+#ui-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 98%;
+    height: 100%;
+    z-index: 1000;
+    pointer-events: none;
+    transform: translateZ(0);
+}
+
+/* Barra de vida */
+.health-container {
+    display: flex;
+    gap: 3px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 7px;
+    border: 2px solid #fff;
+    border-radius: 4px;
+    width: fit-content;
+    position: absolute;
+    top: 35px;
+    left: 100px;
+}
+
+.health-heart {
+    width: 8px;
+    height: 14px;
+    background-color: #00ff00;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+}
+
+.health-heart.empty {
+    background-color: #444;
+    opacity: 0.4;
+}
+
+/* Barra especial */
+.special-container {
+    display: none;
+    position: absolute;
+    top: 85px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.special-bar {
+    display: flex;
+    gap: 2px;
+}
+
+.special-segment {
+    width: 30px;
+    height: 15px;
+    background-color: #444;
+    transition: background-color 0.3s;
+}
+
+.special-segment.charged {
+    background-color: #0077ff;
+}
+
+/* Slots de arma */
+#weapon-slots-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 8px;
+    border-radius: 8px;
+    pointer-events: all;
+    transform: translateZ(0);
+}
+
+.weapon-slot {
+    width: 40px;
+    height: 40px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 2px solid #555;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0.5;
+}
+
+.weapon-slot.selected {
+    border-color: #ffc107;
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+/* Barra de vida do inimigo */
+.enemy-health-bar-container {
+    position: absolute;
+    top: -15px;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 3px;
+    overflow: hidden;
+    z-index: 10;
+    transition: opacity 0.3s;
+    transform: translateZ(0);
+}
+
+.enemy-health-bar {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #0f0, #ff0);
+    transition: width 0.3s, background 0.3s;
+}
+
+.enemy.grounder .enemy-health-bar-container {
+    height: 8px;
+    top: -18px;
+}
+
+.enemy.flyer .enemy-health-bar-container {
+    height: 5px;
+    top: -12px;
+}
+
+/* ===================================================================
+   CONTROLES
+   =================================================================== */
+#controls-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5000;
+    pointer-events: none;
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+/* Analog stick */
+.analog-container {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin-left: 60px;
+    margin-bottom: 70px;
+    pointer-events: auto;
+    z-index: 5001;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateZ(0);
+}
+
+.analog-base {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    backdrop-filter: blur(2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.analog-stick {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.1s ease-out;
+    transform: translateZ(0);
+}
+
+.analog-stick.dragging {
+    transition: none;
+}
+
+/* Botões de ação */
+.action-buttons {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    margin-right: 60px;
+    margin-bottom: 70px;
+    pointer-events: none;
+    z-index: 5001;
+}
+
+.action-btn {
+    position: absolute;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    pointer-events: auto;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2px);
+    transition: transform 0.05s, background-color 0.1s;
+    user-select: none;
+    transform: translateZ(0);
+}
+
+.action-btn:active,
+.action-btn.active,
+.action-btn-active,
+#btn-crouch:active,
+#btn-crouch.active {
+    transform: scale(0.9) !important;
+    background-color: rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+#btn-attack {
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    background: rgba(255, 50, 50, 0.2);
+}
+
+#btn-jump {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(50, 255, 50, 0.2);
+}
+
+#btn-special {
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    background: rgba(50, 50, 255, 0.2);
+}
+
+#btn-block {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 50, 0.2);
+}
+
+#btn-crouch {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    background: rgba(100, 100, 100, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 12px;
+    pointer-events: auto;
+    z-index: 5001;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateX(-50%) translateZ(0);
+}
+
+/* ===================================================================
+   RESPONSIVIDADE DOS CONTROLES
+   =================================================================== */
+@media (orientation: landscape) {
+    .analog-container {
+        width: clamp(120px, 18vw, 160px);
+        height: clamp(120px, 18vw, 160px);
+        margin-left: 10vw;
+        margin-bottom: 12vh;
+    }
+
+    .action-buttons {
+        width: clamp(140px, 20vw, 180px);
+        height: clamp(140px, 20vw, 180px);
+        margin-right: 10vw;
+        margin-bottom: 12vh;
+    }
+
+    .action-btn {
+        width: clamp(50px, 7vw, 70px);
+        height: clamp(50px, 7vw, 70px);
+    }
+}
+
+@media (max-height: 450px) {
+    .analog-container,
+    .action-buttons {
+        transform: scale(0.8);
+        transform-origin: bottom;
+        margin-bottom: 10px;
+    }
+
+    #btn-crouch {
+        bottom: 10px;
+        transform: translateX(-50%) scale(0.8);
+    }
+}
+
+/* ===================================================================
+   DEBUG E UTILITÁRIOS
+   =================================================================== */
+.debug-hitbox,
+.debug-collision-box {
+    position: absolute;
+    border: 2px solid;
+    box-sizing: border-box;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.debug-collision-box {
+    border: 2px dashed rgba(255, 100, 100, 0.7);
+    background-color: rgba(255, 100, 100, 0.2);
+}
+
+.stage-object {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.stage-object.blocker {
+    pointer-events: all;
+    z-index: 6;
+}
+
+.animate-smooth {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000;
+    contain: layout style paint;
+}
+
+.accelerated {
+    transform: translateZ(0);
+}
+
+.projectile {
+    position: absolute !important;
+    transform-origin: center center !important;
+    image-rendering: crisp-edges !important;
+    backface-visibility: hidden !important;
+}
+
+/* Para flechas */
+.projectile[style*="arrow"] {
+    z-index: 30;
+}
+
+/* Para balas */
+.projectile[style*="bullet"] {
+    z-index: 31;
+}
+
+/* Adicione estas animações ao seu CSS */
+@keyframes coinCollect {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes coinFloat {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-10px) rotate(180deg);
+    }
+}
+
+.points-pickup {
+    /* Animation removed - handled in JS */
+    z-index: 6;
+}
+
+.coin-collect {
+    animation: coinCollect 0.5s ease-out forwards;
+}
+
+/* Adicione ao seu CSS existente */
+.pit {
+    /* Estilos para visualização dos buracos (apenas debug) */
+bottom: -10px;
+}
+
+/* Efeito visual para respawn */
+@keyframes respawnFlash {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.respawn-effect {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+    border-radius: 50%;
+    animation: respawnFlash 0.5s ease-out;
+    pointer-events: none;
+    z-index: 100;
+}
+
+/* Efeito de invulnerabilidade */
+.invulnerable {
+    opacity: 0.6 !important;
+    filter: brightness(1.2) !important;
+    pointer-events: none !important;
+    animation: invulnerabilityPulse 1s ease-in-out infinite;
+}
+
+@keyframes invulnerabilityPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.8; }
+}
+/* =================================================== */
+/* SISTEMA DE ANIMAÇÃO COM CROSSFADE SUAVE            */
+/* =================================================== */
+
+/* RESET: Remove a animação problemática */
+.character, .enemy, .projectile, .pickup-item, .boss-entity {
+    animation: none !important; /* Remove a animação que causa piscar */
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+    image-rendering: crisp-edges;
+}
+
+/* =================================================== */
+/* CROSSFADE PARA TRANSIÇÕES ENTRE ANIMAÇÕES          */
+/* =================================================== */
+
+/* Transição suave entre frames de animação */
+@keyframes frame-transition {
+    0% {
+        opacity: 1;
+        filter: brightness(1);
+    }
+    50% {
+        opacity: 0.95;
+        filter: brightness(1.05);
+    }
+    100% {
+        opacity: 1;
+        filter: brightness(1);
+    }
+}
+
+/* Aplica apenas durante mudanças de frame */
+.character.changing-frame,
+.enemy.changing-frame {
+    animation: frame-transition 0.1s ease-out;
+}
+
+/* =================================================== */
+/* ANIMAÇÕES ESPECÍFICAS POR ESTADO                   */
+/* =================================================== */
+
+/* IDLE - Respiração suave */
+@keyframes idle-breathing {
+    0%, 100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateY(-2px);
+        opacity: 0.98;
+    }
+}
+
+.character.idle-anim {
+    animation: idle-breathing 3s ease-in-out infinite;
+}
+
+/* WALKING - Transição suave entre frames */
+@keyframes walk-crossfade {
+    0% {
+        background-image: var(--frame-current);
+        opacity: 1;
+    }
+    20% {
+        background-image: var(--frame-next);
+        opacity: 0.9;
+    }
+    40% {
+        background-image: var(--frame-next);
+        opacity: 1;
+    }
+    60% {
+        background-image: var(--frame-next);
+        opacity: 1;
+    }
+    80% {
+        background-image: var(--frame-current);
+        opacity: 0.9;
+    }
+    100% {
+        background-image: var(--frame-current);
+        opacity: 1;
+    }
+}
+
+.character.walking-anim {
+    animation: walk-crossfade 0.6s ease-in-out infinite;
+}
+
+/* JUMPING - Transição suave */
+@keyframes jump-crossfade {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        opacity: 0.95;
+        transform: translateY(-2px) scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.character.jumping-anim {
+    animation: jump-crossfade 0.3s ease-out;
+}
+
+/* =================================================== */
+/* SISTEMA DE CROSSFADE DINÂMICO VIA JAVASCRIPT       */
+/* =================================================== */
+
+/* Classes para controle de crossfade */
+.crossfade-active {
+    transition: opacity 0.15s ease-out, background-image 0.2s ease-out;
+}
+
+.crossfade-fade-out {
+    opacity: 0;
+    transition: opacity 0.1s ease-out;
+}
+
+.crossfade-fade-in {
+    opacity: 1;
+    transition: opacity 0.15s ease-in;
+}
+
+/* =================================================== */
+/* ANIMAÇÃO DE DANO (INVULNERABILIDADE)                */
+/* =================================================== */
+
+@keyframes damage-flash {
+    0%, 100% {
+        opacity: 1;
+        filter: brightness(1) saturate(1);
+    }
+    50% {
+        opacity: 0.7;
+        filter: brightness(1.8) saturate(1.5);
+    }
+}
+
+.invulnerable {
+    animation: damage-flash 0.3s ease-in-out 3 !important;
+}
+
+/* =================================================== */
+/* ANIMAÇÃO DE SPECIAL ATTACK                         */
+/* =================================================== */
+
+@keyframes special-crossfade {
+    0% {
+        opacity: 1;
+        filter: brightness(1) hue-rotate(0deg);
+    }
+    25% {
+        opacity: 0.8;
+        filter: brightness(1.5) hue-rotate(90deg);
+    }
+    50% {
+        opacity: 1;
+        filter: brightness(1.2) hue-rotate(180deg);
+    }
+    75% {
+        opacity: 0.8;
+        filter: brightness(1.5) hue-rotate(270deg);
+    }
+    100% {
+        opacity: 1;
+        filter: brightness(1) hue-rotate(360deg);
+    }
+}
+
+.special-active {
+    animation: special-crossfade 0.4s ease-in-out infinite;
+}
+
+/* =================================================== */
+/* ANIMAÇÃO DE PROJÉTEIS                              */
+/* =================================================== */
+
+@keyframes projectile-trail {
+    0% {
+        opacity: 1;
+        filter: brightness(1) blur(0);
+    }
+    100% {
+        opacity: 0.8;
+        filter: brightness(1.2) blur(1px);
+    }
+}
+
+.projectile.moving {
+    animation: projectile-trail 0.2s ease-out infinite alternate;
+}
+
+/* =================================================== */
+/* ANIMAÇÃO DE COLETA DE ITENS                        */
+/* =================================================== */
+
+@keyframes pickup-glow {
+    0%, 100% {
+        opacity: 1;
+        filter: brightness(1) drop-shadow(0 0 5px rgba(255,255,255,0.5));
+    }
+    50% {
+        opacity: 0.9;
+        filter: brightness(1.3) drop-shadow(0 0 10px rgba(255,255,255,0.8));
+    }
+}
+
+.pickup-item {
+    animation: pickup-glow 2s ease-in-out infinite;
+}
+
+/* =================================================== */
+/* ANIMAÇÃO DO BOSS                                   */
+/* =================================================== */
+
+@keyframes boss-idle-pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.98;
+        transform: scale(1.01);
+    }
+}
+
+.boss-entity.idle {
+    animation: boss-idle-pulse 4s ease-in-out infinite;
+}
+
+/* =================================================== */
+/* UTILITÁRIOS DE PERFORMANCE                         */
+/* =================================================== */
+
+/* Força aceleração por hardware */
+.optimized-animation {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Previne flickering */
+.no-flicker {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

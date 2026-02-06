@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Boy who Dreamt The World</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background: #000;
+            overflow: hidden;
+            font-family: 'Quicksand', sans-serif;
+            color: #fff;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Background Imersivo com Crossfade */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -4;
+            background: #000;
+        }
+
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.4) contrast(1.2);
+            transition: opacity 2s ease-in-out; /* O segredo da suavidade */
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0) 20%, rgba(0,0,0,0.9) 100%);
+            z-index: -3;
+        }
+
+        /* Camadas de Partículas */
+        #particles-small, #particles-bokeh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        #particles-small { z-index: -2; }
+        #particles-bokeh {
+            z-index: -1;
+            filter: blur(5px) contrast(1.2);
+        }
+
+        /* Estrutura Principal */
+        .main-screen {
+            display: flex;
+            height: 100%;
+            width: 100%;
+            padding: 0 10%;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 1s ease-in-out;
+            position: relative;
+            z-index: 10;
+        }
+
+        .title-section {
+            flex: 1.2;
+            animation: fadeInBlur 2.5s ease-out;
+        }
+
+        .game-title {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            line-height: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: #fff;
+            text-shadow: 0 0 30px rgba(135, 207, 235, 0.6);
+            margin-bottom: 15px;
+        }
+
+        .game-subtitle {
+            font-size: 1.1rem;
+            letter-spacing: 10px;
+            color: #87ceeb;
+            text-transform: uppercase;
+            font-weight: 300;
+            opacity: 0.8;
+        }
+
+        .menu-section {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: flex-end;
+            animation: fadeInRight 1.5s ease-out 0.5s both;
+        }
+
+        .menu-link {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: clamp(1.2rem, 2vw, 1.8rem);
+            font-weight: 500;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+            position: relative;
+            padding-right: 25px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .menu-link::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 0;
+            height: 1px;
+            background: #87ceeb;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px #87ceeb;
+        }
+
+        .menu-link:hover {
+            color: #fff;
+            padding-right: 45px;
+            text-shadow: 0 0 15px rgba(135, 207, 235, 0.8);
+            transform: scale(1.05);
+        }
+
+        .menu-link:hover::after { width: 35px; }
+
+        #credits-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .credits-content { text-align: center; animation: scrollCredits 15s linear forwards; }
+        .credits-content h3 { font-family: 'Cinzel Decorative', cursive; color: #87ceeb; font-size: 2rem; margin-bottom: 40px; letter-spacing: 5px; }
+        .credits-item { margin-bottom: 30px; }
+        .role { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 5px; color: rgba(255, 255, 255, 0.5); margin-bottom: 5px; }
+        .name { font-size: 2rem; letter-spacing: 3px; font-weight: 500; }
+
+        @keyframes fadeInBlur { from { opacity: 0; filter: blur(15px); } to { opacity: 1; filter: blur(0); } }
+        @keyframes fadeInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes scrollCredits { from { transform: translateY(80%); } to { transform: translateY(-80%); } }
+
+        .btn-back {
+            position: absolute;
+            bottom: 50px;
+            background: none;
+            border: 1px solid rgba(135, 207, 235, 0.4);
+            color: #87ceeb;
+            padding: 10px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        .btn-back:hover { background: #87ceeb; color: #000; }
+    </style>
+</head>
+<body>
+
+    <div id="particles-small"></div>
+    <div id="particles-bokeh"></div>
+
+    <div class="video-container">
+        <video id="v1" autoplay muted playsinline></video>
+        <video id="v2" muted playsinline style="opacity: 0;"></video>
+        <div class="overlay"></div>
+    </div>
+
+    <main class="main-screen" id="main-menu">
+        <section class="title-section">
+            <h1 class="game-title">The Boy Who<br>Dreamt The World</h1>
+            <p class="game-subtitle">O menino que sonhou o mundo</p>
+        </section>
+
+        <section class="menu-section">
+            <button class="menu-link" onclick="handleNavigation('play')">Iniciar Jogo</button>
+            <button class="menu-link" onclick="handleNavigation('continue')">Continuar</button>
+            <button class="menu-link" showCredits()">Créditos</button>
+        </section>
+    </main>
+
+    <div id="credits-screen">
+        <div class="credits-content">
+            <h3>Uma Produção Independente</h3>
+            <div class="credits-item">
+                <p class="role">Criação, Código e Design</p>
+                <p class="name">Reinaldo Leal</p>
+            </div>
+            <div class="credits-item">
+                <p class="role">Direção de Arte</p>
+                <p class="name">Reinaldo Leal</p>
+            </div>
+            <div class="credits-item" style="margin-top: 50px;">
+                <p style="font-style: italic; opacity: 0.7;">"obrigado por jogar."</p>
+            </div>
+        </div>
+        <button class="btn-back" onclick="hideCredits()">Voltar</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // --- LOGICA DO LOOP SUAVE (CROSSFADE) ---
+        const v1 = document.getElementById('v1');
+        const v2 = document.getElementById('v2');
+        const videoSrc = "Iniciar.mp4";
+        
+        v1.src = videoSrc;
+        v2.src = videoSrc;
+
+        function setupLoop(current, next) {
+            current.ontimeupdate = function() {
+                // Inicia a transição 2 segundos antes do fim
+                // Se seu vídeo for muito curto, mude o '2' para '1'
+                if (current.duration - current.currentTime < 2) {
+                    next.currentTime = 0;
+                    next.play();
+                    next.style.opacity = '1';
+                    current.style.opacity = '0';
+                    
+                    // Remove o evento atual e prepara o próximo player
+                    current.ontimeupdate = null; 
+                    setupLoop(next, current);
+                }
+            };
+        }
+
+        // Garante o início do primeiro vídeo
+        v1.play().catch(e => console.log("Aguardando interação do usuário para o vídeo."));
+        setupLoop(v1, v2);
+
+        // --- PARTICULAS ---
+        particlesJS("particles-small", {
+            "particles": {
+                "number": { "value": 50, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#ffffff" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": true },
+                "size": { "value": 1.5, "random": true },
+                "move": { "enable": true, "speed": 0.8, "direction": "top", "random": true, "out_mode": "out" }
+            }
+        });
+
+        particlesJS("particles-bokeh", {
+            "particles": {
+                "number": { "value": 20, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": ["#ffffff", "#cae9ff"] },
+                "opacity": { "value": 0.6, "random": true, "anim": { "enable": true, "speed": 0.2, "opacity_min": 0.1 } },
+                "size": { "value": 45, "random": true, "anim": { "enable": true, "speed": 1, "size_min": 20 } },
+                "move": { "enable": true, "speed": 0.4, "direction": "none", "random": true, "out_mode": "out" }
+            }
+        });
+
+        // --- NAVEGAÇÃO ---
+        function handleNavigation(dest) {
+            const menu = document.getElementById('main-menu');
+            menu.style.opacity = '0';
+            menu.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                window.location.href = dest === 'play' ? './intro.html' : './intro.html?continue=true';
+            }, 1000);
+        }
+
+        function showCredits() {
+            const menu = document.getElementById('main-menu');
+            const credits = document.getElementById('credits-screen');
+            menu.style.opacity = '0';
+            setTimeout(() => {
+                menu.style.display = 'none';
+                credits.style.display = 'flex';
+                setTimeout(() => credits.style.opacity = '1', 50);
+            }, 1000);
+        }
+
+        function hideCredits() {
+            const menu = document.getElementById('main-menu');
+            const credits = document.getElementById('credits-screen');
+            credits.style.opacity = '0';
+            setTimeout(() => {
+                credits.style.display = 'none';
+                menu.style.display = 'flex';
+                setTimeout(() => menu.style.opacity = '1', 50);
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
